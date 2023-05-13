@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { logout } from "../../JS/actions/useractions";
 import { useDispatch, useSelector } from "react-redux";
+import Add from "../PlantManager/Add";
 const Home = ({ LoginSetter }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.userR.currentUser);
@@ -36,6 +37,7 @@ const Home = ({ LoginSetter }) => {
             <Text style={styles.logoutText}>logout</Text>
           </Pressable>
         </View>
+        <Add/>
       </ImageBackground>
     </SafeAreaView>
   );
