@@ -1,6 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, SafeAreaView } from "react-native";
-const Home = ({ navigation }) => {
+import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import { logout } from "../../JS/actions/useractions";
+import { useDispatch } from "react-redux";
+const Home = ({ LoginSetter }) => {
+  const dispatch = useDispatch();
   return (
     <SafeAreaView style={styles.container}>
       <Text
@@ -12,7 +15,7 @@ const Home = ({ navigation }) => {
           marginTop: 100,
         }}
       >
-        Home
+        <Button title="logout" onPress={() => dispatch(logout(LoginSetter))} />
       </Text>
     </SafeAreaView>
   );

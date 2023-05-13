@@ -11,7 +11,8 @@ import {
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../JS/actions/useractions";
 
-const SignIn = ({ navigation }) => {
+const SignIn = ({ LoginSetter }) => {
+  
   const dispatch = useDispatch();
   const [signInData, setsignInData] = useState({
     email: "",
@@ -21,7 +22,7 @@ const SignIn = ({ navigation }) => {
     setsignInData((prevState) => ({ ...prevState, [input]: text }));
   };
   const handleSubmit = () => {
-    dispatch(loginUser(signInData, navigation));
+    dispatch(loginUser(signInData, LoginSetter));
   };
   const [show, setShow] = useState(false);
   return (

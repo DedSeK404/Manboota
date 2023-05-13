@@ -1,6 +1,6 @@
 const userModel = require("../models/userModel");
 const { hashPwd, comparePwd } = require("../tools/PasswordHandler");
-// const createtoken = require("../tools/Token");
+const createtoken = require("../tools/Token");
 
 module.exports.Signup = async (req, res) => {
   const { email, password } = req.body;
@@ -29,7 +29,7 @@ module.exports.Signin = async (req, res) => {
       });
     }
 
-    const match = await comparePwd(password, existingUser.password);
+    const match = await comparePwd(password, existingUser.password); 
 
     if (!match) {
       return res
@@ -37,10 +37,11 @@ module.exports.Signin = async (req, res) => {
         .send({ msg: "the password you entered is incorrect" });
     }
     const payload = { userID: existingUser._id };
-    // const token = createtoken(payload);
+    const token = createtoken(payload);
+    
     existingUser.password = undefined;
     res.send({
-      // token,
+       token,
       msg: "user succsessfully logged in",
       user: existingUser,
     });

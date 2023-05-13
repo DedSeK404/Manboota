@@ -7,6 +7,7 @@ import {
   SIGNUPSUCCESS,
 } from "../actiontypes/usertypes";
 
+
 const initialState = {
   authloading: true,
   error: null,
@@ -25,7 +26,6 @@ export const userReducers = (state = initialState, { type, payload }) => {
       return { ...state, authloading: false, Alert: payload };
 
     case SIGNINSUCCESS:
-      
       return {
         ...state,
         Alert: payload.msg,
@@ -44,7 +44,7 @@ export const userReducers = (state = initialState, { type, payload }) => {
       };
 
     case LOGOUT:
-      localStorage.removeItem("token");
+     
       return {
         ...state,
         authloading: true,
