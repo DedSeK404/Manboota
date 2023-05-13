@@ -1,5 +1,6 @@
 const express = require("express");
 const { Signup, Signin } = require("../controllers/userControllers");
+const { registerRules, loginRules, validator } = require("../middlewares/validators/bodyValidators");
 const router = express.Router();
 
 /**
@@ -8,7 +9,7 @@ const router = express.Router();
  *@access public
  */
 
-router.post("/signup",Signup); 
+router.post("/signup", registerRules,validator, Signup);
 
 /**
  *@method POST /auth/signin
@@ -16,6 +17,6 @@ router.post("/signup",Signup);
  *@access public
  */
 
- router.post("/signin",Signin)
+router.post("/signin", loginRules,validator, Signin);
 
 module.exports = router;

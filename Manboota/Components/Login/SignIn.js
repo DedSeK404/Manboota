@@ -11,8 +11,7 @@ import {
 import { useDispatch } from "react-redux";
 import { loginUser } from "../../JS/actions/useractions";
 
-const SignIn = ({ LoginSetter }) => {
-  
+const SignIn = ({ navigation,LoginSetter }) => {
   const dispatch = useDispatch();
   const [signInData, setsignInData] = useState({
     email: "",
@@ -58,6 +57,9 @@ const SignIn = ({ LoginSetter }) => {
             />
           </Pressable>
         </View>
+        <Pressable onPress={() => navigation.navigate("SignUp")}>
+          <Text>Don't have an account? Create one here</Text>
+        </Pressable>
         <Pressable style={styles.SignInBtn} onPress={handleSubmit}>
           <Text style={styles.SignInText}>Sign in</Text>
         </Pressable>

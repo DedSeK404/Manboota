@@ -7,12 +7,13 @@ import {
   TextInput,
   Pressable,
   Image,
+  Alert,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUser } from "../../JS/actions/useractions";
 
-const SignUp = () => {
-  const dispatch=useDispatch()
+const SignUp = ({ navigation }) => {
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const [RetypeShow, setRetypeShow] = useState(false);
   const [signUpData, setSignUpData] = useState({
@@ -23,10 +24,21 @@ const SignUp = () => {
   const handleChange = (text, input) => {
     setSignUpData((prevState) => ({ ...prevState, [input]: text }));
   };
-  const handleSubmit=()=>{
-    dispatch(addUser(signUpData))
-  }
-  // console.log(signUpData);
+
+  const handleSubmit = () => {
+    if (signUpData.password === signUpData.retypePassword) {
+      dispatch(addUser(signUpData, navigation));
+    } else {
+      Alert.alert(
+        "Sign up",
+
+        "Passwords do not match",
+        [{ text: "Continue" }],
+        { cancelable: true }
+      );
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.Textcontainer}>
@@ -69,7 +81,7 @@ const SignUp = () => {
             secure={true}
             secureTextEntry={RetypeShow ? false : true}
             title="re-type password"
-            onChangeText={(text) => handleChange(text, "re-type password")}
+            onChangeText={(text) => handleChange(text, "retypePassword")}
           />
           <Pressable onPress={() => setRetypeShow(!RetypeShow)}>
             <Image
@@ -83,7 +95,7 @@ const SignUp = () => {
           </Pressable>
         </View>
         <View style={styles.username}>
-          <Text>Please choose a username</Text>
+         
           <TextInput
             style={styles.input}
             placeholder="username"
@@ -91,6 +103,9 @@ const SignUp = () => {
             onChangeText={(text) => handleChange(text, "name")}
           />
         </View>
+        <Pressable onPress={() => navigation.navigate("SignIn")}>
+          <Text>Don't have an account? Create one here</Text>
+        </Pressable>
         <Pressable style={styles.SignUpBtn} onPress={handleSubmit}>
           <Text style={styles.SignInText}>Sign up</Text>
         </Pressable>

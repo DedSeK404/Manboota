@@ -15,8 +15,8 @@ const baseURL = "http://192.168.0.4:4500/auth/";
  *@description register a new user
  *@access public
  */
-export const addUser = (newUserData) => async (dispatch) => {
-  // console.log(newUserData);
+export const addUser = (newUserData,navigation) => async (dispatch) => {
+  
   dispatch({
     type: LOADING,
   });
@@ -25,15 +25,31 @@ export const addUser = (newUserData) => async (dispatch) => {
     const res = await axios.post(baseURL + "signup", newUserData);
 
     dispatch({ type: SIGNUPSUCCESS, payload: res.data.msg });
+    Alert.alert(
+      "Sign up",
+
+      res.data.msg,
+      [{ text: "Continue" }],
+      { cancelable: true }
+    )
+    navigation.navigate("SignIn")
   } catch (error) {
     dispatch({ type: AUTHFAILED, payload: error });
-    console.log(error);
-    // if (error.response.data.errors) {
-    //   error.response.data.errors.forEach((el) => Alert.alert(el.msg));
-    // }
-    // if (error.response.data.msg) {
-    //   Alert.alert(error.response.data.msg);
-    // }
+
+    if (error.response.data.errors) {
+      error.response.data.errors.forEach((el) =>
+        Alert.alert(
+          "Sign up",
+
+          el.msg,
+          [{ text: "Continue" }],
+          { cancelable: true }
+        )
+      );
+    }
+    if (error.response.data.msg) {
+      console.log(error.response.data.msg);
+    }
   }
 };
 
@@ -66,7 +82,6 @@ export const loginUser = (UserLoginData, LoginSetter) => async (dispatch) => {
         { cancelable: true }
       );
     }
-    
   } catch (error) {
     dispatch({ type: AUTHFAILED, payload: error });
     console.log(error);
@@ -94,7 +109,6 @@ export const logout = (LoginSetter) => async (dispatch) => {
     }
     saveLogout();
     LoginSetter();
-   
   } catch (error) {
     dispatch({ type: FAILED, payload: error });
     console.log(error);

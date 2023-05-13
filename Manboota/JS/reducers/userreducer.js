@@ -14,7 +14,6 @@ const initialState = {
   Alert: "",
   currentUser: {},
   isAuth: false,
-  currentUserR: {},
 };
 
 export const userReducers = (state = initialState, { type, payload }) => {
