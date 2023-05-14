@@ -1,5 +1,5 @@
 const express = require("express");
-const { Signup, Signin } = require("../controllers/userControllers");
+const { Signup, Signin, getCurrentUser } = require("../controllers/userControllers");
 const { registerRules, loginRules, validator } = require("../middlewares/validators/bodyValidators");
 const router = express.Router();
 
@@ -18,5 +18,12 @@ router.post("/signup", registerRules,validator, Signup);
  */
 
 router.post("/signin", loginRules,validator, Signin);
+
+/**
+ *@method GET /auth/
+ *@description  utilisateur authentifié
+ *@access private
+ */
+ router.get("/:userID", getCurrentUser) 
 
 module.exports = router;

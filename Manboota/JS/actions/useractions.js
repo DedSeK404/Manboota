@@ -2,6 +2,7 @@ import axios from "axios";
 import {
   AUTHFAILED,
   FAILED,
+  GETCURRENTAUTHUSER,
   LOADING,
   LOGOUT,
   SIGNINSUCCESS,
@@ -15,8 +16,7 @@ const baseURL = "http://192.168.0.4:4500/auth/";
  *@description register a new user
  *@access public
  */
-export const addUser = (newUserData,navigation) => async (dispatch) => {
-  
+export const addUser = (newUserData, navigation) => async (dispatch) => {
   dispatch({
     type: LOADING,
   });
@@ -31,8 +31,8 @@ export const addUser = (newUserData,navigation) => async (dispatch) => {
       res.data.msg,
       [{ text: "Continue" }],
       { cancelable: true }
-    )
-    navigation.navigate("SignIn")
+    );
+    navigation.navigate("SignIn");
   } catch (error) {
     dispatch({ type: AUTHFAILED, payload: error });
 
@@ -68,10 +68,14 @@ export const loginUser = (UserLoginData, LoginSetter) => async (dispatch) => {
     const { data } = await axios.post(baseURL + "signin", UserLoginData);
 
     dispatch({ type: SIGNINSUCCESS, payload: data });
-    async function save() {
+    async function saveToken() {
       await SecureStore.setItemAsync("Auth", data.token);
     }
-    save();
+    saveToken();
+    async function saveID() {
+      await SecureStore.setItemAsync("currentUser", data.user._id);
+    }
+    saveID();
     LoginSetter();
     if (data.msg === "user succsessfully logged in") {
       Alert.alert(
@@ -108,9 +112,31 @@ export const logout = (LoginSetter) => async (dispatch) => {
       await SecureStore.setItemAsync("Auth", "");
     }
     saveLogout();
+    async function saveLogoutID() {
+      await SecureStore.setItemAsync("currentUser", "");
+    }
+    saveLogoutID();
     LoginSetter();
   } catch (error) {
     dispatch({ type: FAILED, payload: error });
+    console.log(error);
+  }
+};
+
+/**
+ *@method GET /auth/
+ *@description  authenticated user
+ *@access private
+ */
+export const getUser = (userID) => async (dispatch) => {
+  dispatch({ type: LOADING });
+console.log(userID)
+  try {
+    const { data } = await axios.get(`${baseURL}/${userID}`);
+    console.log(data)
+    dispatch({ type: GETCURRENTAUTHUSER, payload: data });
+  } catch (error) {
+    dispatch({ type: AUTHFAILED, payload: error });
     console.log(error);
   }
 };

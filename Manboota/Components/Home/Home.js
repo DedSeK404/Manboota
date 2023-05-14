@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,14 +7,25 @@ import {
   Pressable,
   ImageBackground,
   Image,
+  ActivityIndicator,
 } from "react-native";
-import { logout } from "../../JS/actions/useractions";
+import { getUser, logout } from "../../JS/actions/useractions";
 import { useDispatch, useSelector } from "react-redux";
 import Add from "../PlantManager/Add";
+import * as SecureStore from "expo-secure-store";
+
 const Home = ({ LoginSetter }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.userR.currentUser);
-  console.log(currentUser);
+  const loading = useSelector((state) => state.userR.authloading);
+  useEffect(() => {
+    async function getValueForUserID() {
+      let userID = await SecureStore.getItemAsync("currentUser");
+      dispatch(getUser(userID));
+    }
+    getValueForUserID();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -28,7 +39,11 @@ const Home = ({ LoginSetter }) => {
               style={styles.Logo}
               source={require("../../assets/Logo.png")}
             />
-            <Text style={styles.username}>{currentUser.name}</Text>
+            {loading ? (
+              <ActivityIndicator size="small" color="#7EE068" />
+            ) : (
+              <Text style={styles.username}>{currentUser.name}</Text>
+            )}
           </View>
           <Pressable
             style={styles.logoutBtn}
@@ -37,7 +52,9 @@ const Home = ({ LoginSetter }) => {
             <Text style={styles.logoutText}>logout</Text>
           </Pressable>
         </View>
-        <Add/>
+        <View style={styles.Add}>
+          <Add />
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -68,20 +85,26 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   logoutText: {
-    color: "white.",
+    color: "white",
   },
   image: {
     flex: 1,
-  },logocontainer:{
-    display:"flex",
-    flexDirection:"row",
-    alignItems:"center",
-    gap:10
-  },Logo:{
-    width:50,
-    height:60,
-    
-  }
+  },
+  logocontainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  Logo: {
+    width: 50,
+    height: 60,
+  },
+  Add: {
+    flex: 1,
+    marginTop: 50,
+    alignItems: "center",
+  },
 });
 
 export default Home;

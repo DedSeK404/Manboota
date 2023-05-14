@@ -29,7 +29,7 @@ module.exports.Signin = async (req, res) => {
       });
     }
 
-    const match = await comparePwd(password, existingUser.password); 
+    const match = await comparePwd(password, existingUser.password);
 
     if (!match) {
       return res
@@ -38,10 +38,10 @@ module.exports.Signin = async (req, res) => {
     }
     const payload = { userID: existingUser._id };
     const token = createtoken(payload);
-    
+
     existingUser.password = undefined;
     res.send({
-       token,
+      token,
       msg: "user succsessfully logged in",
       user: existingUser,
     });
@@ -50,10 +50,16 @@ module.exports.Signin = async (req, res) => {
   }
 };
 
-// module.exports.getCurrentUser = (req, res) => {
-//   try {
-//     res.send({ user: req.user });
-//   } catch (error) {
-//     res.status(500).send({ msg: error.message });
-//   }
-// };
+module.exports.getCurrentUser = async (req, res) => {
+  try {
+    const { userID } = req.params;
+    console.log(userID);
+    const current = await userModel.findOne({ _id: userID });
+    current.password = undefined;
+    current.email = undefined;
+    current.creationDate = undefined;
+    res.send(current);
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+};

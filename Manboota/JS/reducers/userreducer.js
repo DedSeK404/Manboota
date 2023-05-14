@@ -1,12 +1,11 @@
 import {
   AUTHFAILED,
-  CURRENTUSERAUTH,
+  GETCURRENTAUTHUSER,
   LOADING,
   LOGOUT,
   SIGNINSUCCESS,
   SIGNUPSUCCESS,
 } from "../actiontypes/usertypes";
-
 
 const initialState = {
   authloading: true,
@@ -28,22 +27,19 @@ export const userReducers = (state = initialState, { type, payload }) => {
       return {
         ...state,
         Alert: payload.msg,
-        currentUser: payload.user,
         authloading: false,
         isAuth: true,
       };
 
-    case CURRENTUSERAUTH:
+    case GETCURRENTAUTHUSER:
       return {
         ...state,
-
         currentUser: payload,
         isAuth: true,
         authloading: false,
       };
 
     case LOGOUT:
-     
       return {
         ...state,
         authloading: true,
