@@ -130,10 +130,10 @@ export const logout = (LoginSetter) => async (dispatch) => {
  */
 export const getUser = (userID) => async (dispatch) => {
   dispatch({ type: LOADING });
-console.log(userID)
+
   try {
     const { data } = await axios.get(`${baseURL}/${userID}`);
-    console.log(data)
+   
     dispatch({ type: GETCURRENTAUTHUSER, payload: data });
   } catch (error) {
     dispatch({ type: AUTHFAILED, payload: error });

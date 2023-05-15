@@ -184,12 +184,13 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
     width: 43,
     height: 25,
+    marginLeft:-70
   },
   PassInput: {
     borderWidth: 1,
     borderRadius: 30,
     height: 50,
-    width: "80%",
+    width: "100%",
     paddingLeft: 30,
   },
 });

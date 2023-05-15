@@ -38,10 +38,7 @@ const Home = ({ LoginSetter }) => {
       >
         <View style={styles.header}>
           <View style={styles.logocontainer}>
-            <Image
-              style={styles.Logo}
-              source={require("../../assets/Logo.png")}
-            />
+            
             {loading ? (
               <ActivityIndicator size="small" color="#7EE068" />
             ) : (
@@ -84,7 +81,7 @@ const styles = StyleSheet.create({
     borderColor: "#7EE068",
     borderRadius: 20,
     width: "90%",
-    padding: 7,
+    padding: 15,
     alignSelf: "center",
   },
   logoutBtn: {
@@ -123,7 +120,7 @@ const styles = StyleSheet.create({
   },
   plants: {
     flex: 1,
-    marginTop:-480,
+    marginTop: -490,
     alignItems: "center",
   },
 });

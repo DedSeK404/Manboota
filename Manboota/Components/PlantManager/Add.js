@@ -76,7 +76,7 @@ const Add = () => {
       );
     }
   };
- 
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.AddButtonsContainer}>
@@ -127,17 +127,17 @@ const Add = () => {
               <View style={styles.modalContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Define tree species"
+                  placeholder="Name/Number your tree"
                   placeholderTextColor="#7EE068"
-                  onChangeText={(text) => handleChangeTree(text, "species")}
+                  onChangeText={(text) => handleChangeTree(text, "name")}
                 />
               </View>
               <View style={styles.modalContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Name/Number your tree"
+                  placeholder="Define tree species"
                   placeholderTextColor="#7EE068"
-                  onChangeText={(text) => handleChangeTree(text, "name")}
+                  onChangeText={(text) => handleChangeTree(text, "species")}
                 />
               </View>
 
@@ -180,20 +180,19 @@ const Add = () => {
               <View style={styles.modalContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Define plant species"
-                  placeholderTextColor="#7EE068"
-                  onChangeText={(text) => handleChange(text, "species")}
-                />
-              </View>
-              <View style={styles.modalContainer}>
-                <TextInput
-                  style={styles.input}
                   placeholder="Name/Number your plant"
                   placeholderTextColor="#7EE068"
                   onChangeText={(text) => handleChange(text, "name")}
                 />
               </View>
-
+              <View style={styles.modalContainer}>
+                <TextInput
+                  style={styles.input}
+                  placeholder="Define plant species"
+                  placeholderTextColor="#7EE068"
+                  onChangeText={(text) => handleChange(text, "species")}
+                />
+              </View>
               <View style={styles.pressablesContainer}>
                 <Pressable
                   style={[styles.button, styles.buttonAdd]}
@@ -245,7 +244,8 @@ const styles = StyleSheet.create({
   AddButtonsContainer: {
     display: "flex",
     flexDirection: "row",
-    gap: 10,
+    justifyContent: "space-between",
+    gap: 20,
   },
   Pressable: {
     display: "flex",

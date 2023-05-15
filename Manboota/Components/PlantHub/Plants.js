@@ -8,8 +8,10 @@ import {
   ActivityIndicator,
   Pressable,
   Image,
+  ScrollView,
+  ImageBackground,
 } from "react-native";
-
+import PlantContainer from "./PlantContainer";
 import { useSelector } from "react-redux";
 
 const Plants = () => {
@@ -45,22 +47,6 @@ const Plants = () => {
     setAllStyle(true);
   };
 
-  // const handleAllStyle = () => {
-  //   setTreeStyle(false);
-  //   setPlantStyle(false);
-  //   setAllStyle(true);
-  // };
-  // const handleTreeStyle = () => {
-  //   setTreeStyle(true);
-  //   setPlantStyle(false);
-  //   setAllStyle(false);
-  // };
-  // const handlePlantStyle = () => {
-  //   setTreeStyle(false);
-  //   setPlantStyle(true);
-  //   setAllStyle(false);
-  // };
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.pressableContainer}>
@@ -94,16 +80,21 @@ const Plants = () => {
           />
         </Pressable>
       </View>
-      <View>
-        {loading ? (
-          <ActivityIndicator size="large" color="#7EE068" />
-        ) : (
-          <FlatList
-            data={plantFilter || treeFilter || plants}
-            renderItem={({ item }) => <Text>{item.name}</Text>}
-            keyExtractor={(item) => item._id}
-          />
-        )}
+      <View style={styles.scrollableContainer}>
+        <ScrollView>
+          <View style={styles.list}>
+            {loading ? (
+              <ActivityIndicator size="large" color="#7EE068" />
+            ) : (
+              <FlatList
+                data={plantFilter || treeFilter || plants}
+                renderItem={({ item }) => <PlantContainer data={item} />}
+                keyExtractor={(item) => item._id}
+                numColumns={3}
+              />
+            )}
+          </View>
+        </ScrollView>
       </View>
     </SafeAreaView>
   );
@@ -183,6 +174,19 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderColor: "#ec8f0a",
     backgroundColor: "#ec8f0a",
+  },
+  list: {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 20,
+  },
+  scrollableContainer: {
+    height: "67%",
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "#7EE068",
+    marginTop: 25,
   },
 });
 
