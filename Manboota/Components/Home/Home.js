@@ -13,6 +13,8 @@ import { getUser, logout } from "../../JS/actions/useractions";
 import { useDispatch, useSelector } from "react-redux";
 import Add from "../PlantManager/Add";
 import * as SecureStore from "expo-secure-store";
+import Plants from "../PlantHub/Plants";
+import { getallplants } from "../../JS/actions/plantactions";
 
 const Home = ({ LoginSetter }) => {
   const dispatch = useDispatch();
@@ -22,6 +24,7 @@ const Home = ({ LoginSetter }) => {
     async function getValueForUserID() {
       let userID = await SecureStore.getItemAsync("currentUser");
       dispatch(getUser(userID));
+      dispatch(getallplants(userID))
     }
     getValueForUserID();
   }, []);
@@ -55,6 +58,9 @@ const Home = ({ LoginSetter }) => {
         <View style={styles.Add}>
           <Add />
         </View>
+        <View>
+          <Plants/>
+        </View>
       </ImageBackground>
     </SafeAreaView>
   );
@@ -67,9 +73,15 @@ const styles = StyleSheet.create({
   header: {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
     marginTop: "15%",
+    borderWidth:1,
+    borderColor:"#7EE068",
+    borderRadius:20,
+    width:"90%",
+    padding:7,
+    alignSelf:"center"
   },
   logoutBtn: {
     alignItems: "center",
@@ -97,12 +109,12 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   Logo: {
-    width: 50,
+    width: 52,
     height: 60,
   },
   Add: {
     flex: 1,
-    marginTop: 50,
+    marginTop: 30,
     alignItems: "center",
   },
 });

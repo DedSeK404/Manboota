@@ -53,7 +53,6 @@ module.exports.Signin = async (req, res) => {
 module.exports.getCurrentUser = async (req, res) => {
   try {
     const { userID } = req.params;
-    console.log(userID);
     const current = await userModel.findOne({ _id: userID });
     current.password = undefined;
     current.email = undefined;

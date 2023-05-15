@@ -1,9 +1,11 @@
-export const LOADING = "LOADING";
+export const PLANTLOADING = "PLANTLOADING";
 
-export const FAILED = "FAILED";
+export const PLANTFAILED = "PLANTFAILED";
 
 export const PLANTADDEDSUCCESSFULLY = "PLANTADDEDSUCCESSFULLY";
 
 export const GETALLPLANTS = "GETALLPLANTS";
+
+export const EDITPLANT = "EDITPLANT";
 
 export const DELETEPLANT = "DELETEPLANT";

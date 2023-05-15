@@ -13,7 +13,7 @@ app.use(express.json());
 connectToDB();
 
 app.use("/auth", require("./routes/userRoutes")); 
-
+app.use("/plant", require("./routes/plantRoutes")); 
 
 app.listen(PORT, (e) =>
   e ? console.log(e.message) : console.log(`Server is running on port ${PORT}`)

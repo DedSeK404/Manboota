@@ -28,59 +28,40 @@ module.exports.loginRules = [
     .withMessage("password cannot be less than 8 characters"),
 ];
 
-// module.exports.AddPetRules = [
-//   body("name")
-//     .notEmpty()
-//     .trim()
-//     .isLength({ min: 1 })
-//     .withMessage("name must have atleast 1 character"),
-//   body("breed")
-//     .notEmpty()
-//     .trim()
-//     .isLength({ min: 1 })
-//     .withMessage("breed must have atleast 1 character"),
-//   body("gender").notEmpty().withMessage("please choose your pet's gender"),
-//   body("birth_date")
-//     .isISO8601()
-//     .toDate()
-//     .withMessage("please select a valid date"),
-//   check("birth_date").custom((value) => {
-//     let enteredDate = new Date(value);
-//     let todaysDate = new Date();
+module.exports.AddPetRules = [
+  body("name")
+    .notEmpty()
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("name must have atleast 1 character"),
+  body("breed")
+    .notEmpty()
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("breed must have atleast 1 character"),
+  body("gender").notEmpty().withMessage("please choose your pet's gender"),
+  body("birth_date")
+    .isISO8601()
+    .toDate()
+    .withMessage("please select a valid date"),
+  check("birth_date").custom((value) => {
+    let enteredDate = new Date(value);
+    let todaysDate = new Date();
 
-//     if (enteredDate < todaysDate) {
-//       return true;
-//     }
-//     throw new Error("please enter a valid date");
-//   }),
-// ];
+    if (enteredDate < todaysDate) {
+      return true;
+    }
+    throw new Error("please enter a valid date");
+  }),
+];
 
-// module.exports.EditPetRules = [
-//   body("name")
-//     .notEmpty()
-//     .trim()
-//     .isLength({ min: 1 })
-//     .withMessage("name must have atleast 1 character"),
-//   body("breed")
-//     .notEmpty()
-//     .trim()
-//     .isLength({ min: 1 })
-//     .withMessage("breed must have atleast 1 character"),
-//   body("gender").notEmpty().withMessage("please choose your pet's gender"),
-//   body("birth_date")
-//     .isISO8601()
-//     .toDate()
-//     .withMessage("please select a valid date"),
-//   check("birth_date").custom((value) => {
-//     let enteredDate = new Date(value);
-//     let todaysDate = new Date();
-
-//     if (enteredDate < todaysDate) {
-//       return true;
-//     }
-//     throw new Error("please enter a valid date");
-//   }),
-// ];
+module.exports.addPlantRules = [
+  body("name")
+    .notEmpty()
+    .trim()
+    .isLength({ min: 1 })
+    .withMessage("name/number must have atleast 1 character"),
+];
 
 // module.exports.PostOfferRules = [
 //   body("description")

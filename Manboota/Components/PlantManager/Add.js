@@ -3,17 +3,19 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   SafeAreaView,
   Image,
   Pressable,
   Modal,
-  Alert,
   ImageBackground,
   TextInput,
 } from "react-native";
+import { addPlant } from "../../JS/actions/plantactions";
+import { useDispatch, useSelector } from "react-redux";
 
 const Add = () => {
+  const currentUser = useSelector((state) => state.userR.currentUser);
+  const dispatch = useDispatch();
   const [modalVisible, setModalVisible] = useState(false);
   const [plantmodalVisible, setPlantModalVisible] = useState(false);
   const [style, setStyle] = useState(true);
@@ -34,6 +36,36 @@ const Add = () => {
     setPlantModalVisible(!plantmodalVisible);
     setplantStyle(!plantstyle);
   };
+  // add tree
+  const [addTreeData, setaddPTreeData] = useState({
+    type: "tree",
+    species: "",
+    name: "",
+  });
+  const handleChangeTree = (text, input) => {
+    setaddPTreeData((prevState) => ({ ...prevState, [input]: text }));
+  };
+  const handleSubmitTree = () => {
+    dispatch(
+      addPlant({ ...addTreeData, user: currentUser._id }, closeTreeModal)
+    );
+  };
+
+  // add plant
+  const [addPlantData, setaddPlantData] = useState({
+    type: "plant",
+    species: "",
+    name: "",
+  });
+  const handleChange = (text, input) => {
+    setaddPlantData((prevState) => ({ ...prevState, [input]: text }));
+  };
+  const handleSubmitPlant = () => {
+    dispatch(
+      addPlant({ ...addPlantData, user: currentUser._id }, closePlantModal)
+    );
+  };
+  
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.AddButtonsContainer}>
@@ -94,20 +126,22 @@ const Add = () => {
                   style={styles.input}
                   placeholder="Define tree species"
                   placeholderTextColor="#7EE068"
+                  onChangeText={(text) => handleChangeTree(text, "species")}
                 />
               </View>
               <View style={styles.modalContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Name your tree"
+                  placeholder="Name/Number your tree"
                   placeholderTextColor="#7EE068"
+                  onChangeText={(text) => handleChangeTree(text, "name")}
                 />
               </View>
 
               <View style={styles.pressablesContainer}>
                 <Pressable
                   style={[styles.button, styles.buttonAdd]}
-                  onPress={closeTreeModal}
+                  onPress={handleSubmitTree}
                 >
                   <Text style={{ color: "white" }}>Add</Text>
                 </Pressable>
@@ -145,20 +179,22 @@ const Add = () => {
                   style={styles.input}
                   placeholder="Define plant species"
                   placeholderTextColor="#7EE068"
+                  onChangeText={(text) => handleChange(text, "species")}
                 />
               </View>
               <View style={styles.modalContainer}>
                 <TextInput
                   style={styles.input}
-                  placeholder="Name your plant"
+                  placeholder="Name/Number your plant"
                   placeholderTextColor="#7EE068"
+                  onChangeText={(text) => handleChange(text, "name")}
                 />
               </View>
 
               <View style={styles.pressablesContainer}>
                 <Pressable
                   style={[styles.button, styles.buttonAdd]}
-                  onPress={closePlantModal}
+                  onPress={handleSubmitPlant}
                 >
                   <Text style={{ color: "white" }}>Add</Text>
                 </Pressable>
@@ -189,7 +225,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 20,
     borderColor: "#8a8989",
   },
@@ -199,7 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
-    borderWidth: 2,
+    borderWidth: 1,
     borderRadius: 20,
     borderColor: "#7EE068",
   },
