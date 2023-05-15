@@ -9,6 +9,7 @@ import {
   Modal,
   ImageBackground,
   TextInput,
+  Alert,
 } from "react-native";
 import { addPlant } from "../../JS/actions/plantactions";
 import { useDispatch, useSelector } from "react-redux";
@@ -31,10 +32,12 @@ const Add = () => {
   const closeTreeModal = () => {
     setModalVisible(!modalVisible);
     setStyle(!style);
+    addTreeData.name = "";
   };
   const closePlantModal = () => {
     setPlantModalVisible(!plantmodalVisible);
     setplantStyle(!plantstyle);
+    addPlantData.name = "";
   };
   // add tree
   const [addTreeData, setaddPTreeData] = useState({
@@ -46,9 +49,13 @@ const Add = () => {
     setaddPTreeData((prevState) => ({ ...prevState, [input]: text }));
   };
   const handleSubmitTree = () => {
-    dispatch(
-      addPlant({ ...addTreeData, user: currentUser._id }, closeTreeModal)
-    );
+    if (!addTreeData.name) {
+      return Alert.alert("Post", "you left the name field empty");
+    } else {
+      dispatch(
+        addPlant({ ...addTreeData, user: currentUser._id }, closeTreeModal)
+      );
+    }
   };
 
   // add plant
@@ -61,11 +68,15 @@ const Add = () => {
     setaddPlantData((prevState) => ({ ...prevState, [input]: text }));
   };
   const handleSubmitPlant = () => {
-    dispatch(
-      addPlant({ ...addPlantData, user: currentUser._id }, closePlantModal)
-    );
+    if (!addPlantData.name) {
+      return Alert.alert("Post", "you left the name field empty");
+    } else {
+      dispatch(
+        addPlant({ ...addPlantData, user: currentUser._id }, closePlantModal)
+      );
+    }
   };
-  
+ 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.AddButtonsContainer}>
@@ -75,12 +86,8 @@ const Add = () => {
               Add Tree
             </Text>
             <Image
-              style={styles.image}
-              source={
-                style
-                  ? require("../../assets/GrayTree.png")
-                  : require("../../assets/GreenTree.png")
-              }
+              style={style ? styles.image : styles.imageActive}
+              source={require("../../assets/GrayTree.png")}
             />
           </Pressable>
         </View>
@@ -92,12 +99,8 @@ const Add = () => {
               Add Plant
             </Text>
             <Image
-              style={styles.image}
-              source={
-                plantstyle
-                  ? require("../../assets/GrayPlant.png")
-                  : require("../../assets/GreenPlant.png")
-              }
+              style={plantstyle ? styles.image : styles.imageActive}
+              source={require("../../assets/GrayPlant.png")}
             />
           </Pressable>
         </View>
@@ -251,7 +254,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
   },
-  image: { width: 50, height: 52 },
+  image: {
+    width: 50,
+    height: 52,
+  },
+  imageActive: {
+    width: 50,
+    height: 52,
+    tintColor: "#7EE068",
+  },
   text: {
     color: "#8a8989",
     fontSize: 18,

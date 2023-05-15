@@ -24,7 +24,7 @@ const Home = ({ LoginSetter }) => {
     async function getValueForUserID() {
       let userID = await SecureStore.getItemAsync("currentUser");
       dispatch(getUser(userID));
-      dispatch(getallplants(userID))
+      dispatch(getallplants(userID));
     }
     getValueForUserID();
   }, []);
@@ -58,8 +58,8 @@ const Home = ({ LoginSetter }) => {
         <View style={styles.Add}>
           <Add />
         </View>
-        <View>
-          <Plants/>
+        <View style={styles.plants}>
+          <Plants />
         </View>
       </ImageBackground>
     </SafeAreaView>
@@ -68,7 +68,11 @@ const Home = ({ LoginSetter }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    justifyContent: "space-between",
+    gap: 30,
   },
   header: {
     display: "flex",
@@ -76,12 +80,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginTop: "15%",
-    borderWidth:1,
-    borderColor:"#7EE068",
-    borderRadius:20,
-    width:"90%",
-    padding:7,
-    alignSelf:"center"
+    borderWidth: 1,
+    borderColor: "#7EE068",
+    borderRadius: 20,
+    width: "90%",
+    padding: 7,
+    alignSelf: "center",
   },
   logoutBtn: {
     alignItems: "center",
@@ -115,6 +119,11 @@ const styles = StyleSheet.create({
   Add: {
     flex: 1,
     marginTop: 30,
+    alignItems: "center",
+  },
+  plants: {
+    flex: 1,
+    marginTop:-480,
     alignItems: "center",
   },
 });
