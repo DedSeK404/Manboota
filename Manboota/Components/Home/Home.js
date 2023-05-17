@@ -15,6 +15,7 @@ import Add from "../PlantManager/Add";
 import * as SecureStore from "expo-secure-store";
 import Plants from "../PlantHub/Plants";
 import { getallplants } from "../../JS/actions/plantactions";
+import PlantPage from "../PlantHub/PlantPage";
 
 const Home = ({ LoginSetter }) => {
   const dispatch = useDispatch();
@@ -28,7 +29,17 @@ const Home = ({ LoginSetter }) => {
     }
     getValueForUserID();
   }, []);
-
+  const [plantPage, setPlantPage] = useState("");
+  const [showPage, setShowPage] = useState(true);
+  const changeView = (data) => {
+    setPlantPage(data);
+    setShowPage(!showPage);
+    
+  };
+  const changeViewHome = () => {
+    setShowPage(!showPage); 
+  };
+  console.log(plantPage)
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -38,7 +49,6 @@ const Home = ({ LoginSetter }) => {
       >
         <View style={styles.header}>
           <View style={styles.logocontainer}>
-            
             {loading ? (
               <ActivityIndicator size="small" color="#7EE068" />
             ) : (
@@ -55,9 +65,15 @@ const Home = ({ LoginSetter }) => {
         <View style={styles.Add}>
           <Add />
         </View>
-        <View style={styles.plants}>
-          <Plants />
-        </View>
+        {showPage ? (
+          <View style={styles.plants}>
+            <Plants changeView={changeView} setPlantPage={setPlantPage} />
+          </View>
+        ) : (
+          <View style={styles.plants}>
+            <PlantPage changeViewHome={changeViewHome} Data={plantPage} />
+          </View>
+        )}
       </ImageBackground>
     </SafeAreaView>
   );

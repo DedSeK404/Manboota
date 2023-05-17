@@ -9,7 +9,9 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/webpack-config": "^18.0.1",
     "@react-native-community/blur": "^4.3.2",
+    "@react-native-community/datetimepicker": "6.7.3",
     "@react-navigation/stack": "^6.3.16",
     "axios": "^1.4.0",
     "expo": "~48.0.15",
@@ -17,10 +19,13 @@
     "expo-blur": "~12.2.2",
     "expo-secure-store": "~12.1.1",
     "expo-status-bar": "~1.4.4",
+    "moment": "^2.29.4",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
     "react-native": "0.71.7",
     "react-native-gesture-handler": "~2.9.0",
+    "react-native-modal-datetime-picker": "^15.0.1",
+    "react-native-modern-datepicker": "^1.0.0-beta.91",
     "react-native-video": "^5.2.1",
     "react-native-web": "~0.18.11",
     "react-redux": "^8.0.5",

@@ -4,17 +4,15 @@ import {
   View,
   SafeAreaView,
   FlatList,
-  Text,
   ActivityIndicator,
   Pressable,
   Image,
   ScrollView,
-  ImageBackground,
 } from "react-native";
 import PlantContainer from "./PlantContainer";
 import { useSelector } from "react-redux";
 
-const Plants = () => {
+const Plants = ({ changeView,setPlantPage }) => {
   const plants = useSelector((state) => state.plantR.plants);
   const loading = useSelector((state) => state.plantR.loading);
 
@@ -81,20 +79,25 @@ const Plants = () => {
         </Pressable>
       </View>
       <View style={styles.scrollableContainer}>
-        <ScrollView>
+        <View style={{ flex: 1 }}>
           <View style={styles.list}>
             {loading ? (
               <ActivityIndicator size="large" color="#7EE068" />
             ) : (
               <FlatList
                 data={plantFilter || treeFilter || plants}
-                renderItem={({ item }) => <PlantContainer data={item} />}
+                renderItem={({ item }) => (
+                  <Pressable onPress={()=>changeView(item)}>
+                    <PlantContainer data={item} />
+                  </Pressable>
+                )}
                 keyExtractor={(item) => item._id}
                 numColumns={3}
+                style={{height:400}}
               />
             )}
           </View>
-        </ScrollView>
+        </View>
       </View>
     </SafeAreaView>
   );

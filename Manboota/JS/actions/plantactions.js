@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Alert } from "react-native";
 import {
+  EDITPLANT,
   GETALLPLANTS,
   PLANTADDEDSUCCESSFULLY,
   PLANTFAILED,
@@ -31,7 +32,7 @@ export const addPlant = (plantData, closePlantModal) => async (dispatch) => {
       { cancelable: true }
     );
     closePlantModal();
-    dispatch(getallplants(plantData.user))
+    dispatch(getallplants(plantData.user));
   } catch (error) {
     dispatch({ type: PLANTFAILED, payload: error });
     console.log(error);
@@ -73,5 +74,44 @@ export const getallplants = (user) => async (dispatch) => {
   } catch (error) {
     dispatch({ type: PLANTFAILED, payload: error });
     Alert.alert("Post", error, [{ text: "Continue" }], { cancelable: true });
+  }
+};
+
+/**
+ * @route patch /plant/edit
+ * @description update plant
+ * @access protected
+ */
+export const editPlant = (editData) => async (dispatch) => {
+  dispatch({
+    type: PLANTLOADING,
+  });
+  console.log(editData);
+  try {
+    const { data } = await axios.patch(baseURL + "edit", editData);
+
+    Alert.alert(
+      "Edit",
+
+      data.msg,
+      [{ text: "Continue" }],
+      { cancelable: true }
+    );
+    dispatch(getallplants(editData.user));
+    dispatch({ type: EDITPLANT, payload: data.msg });
+  } catch (error) {
+    dispatch({ type: PLANTFAILED, payload: error });
+    console.log(error);
+    if (error.response.data.errors) {
+      error.response.data.errors.forEach((el) =>
+        Alert.alert(
+          "Edit",
+
+          el.msg,
+          [{ text: "Continue" }],
+          { cancelable: true }
+        )
+      );
+    }
   }
 };
