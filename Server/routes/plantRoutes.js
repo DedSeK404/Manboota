@@ -1,5 +1,9 @@
 const express = require("express");
-const { addPlant, getallPlants } = require("../controllers/plantControllers");
+const {
+  addPlant,
+  getallPlants,
+  updatePlant,
+} = require("../controllers/plantControllers");
 const {
   validator,
   addPlantRules,
@@ -20,5 +24,12 @@ router.post("/add", addPlantRules, validator, addPlant);
  * @access protected(authenticated)
  */
 router.get("/:user", getallPlants);
+
+/**
+ * @route patch /plant/edit
+ * @description update plant
+ * @access protected
+ */
+router.patch("/edit", updatePlant);
 
 module.exports = router;

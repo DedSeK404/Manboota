@@ -6,7 +6,6 @@ import {
   SafeAreaView,
   Pressable,
   ImageBackground,
-  Image,
   ActivityIndicator,
 } from "react-native";
 import { getUser, logout } from "../../JS/actions/useractions";
@@ -34,12 +33,11 @@ const Home = ({ LoginSetter }) => {
   const changeView = (data) => {
     setPlantPage(data);
     setShowPage(!showPage);
-    
   };
   const changeViewHome = () => {
-    setShowPage(!showPage); 
+    setShowPage(!showPage);
   };
-  console.log(plantPage)
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground

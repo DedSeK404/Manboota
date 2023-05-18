@@ -6,6 +6,9 @@ const plantSchema = new mongoose.Schema({
   water: { type: String },
   type: { type: String },
   creationDate: { type: Date, default: new Date() },
+  timerStart: { type: String },
+  timerEnd: { type: String },
+  timerRepeat: { type: String },
   user: { type: mongoose.Types.ObjectId, ref: "users" },
 });
 

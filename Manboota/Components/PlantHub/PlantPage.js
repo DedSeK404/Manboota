@@ -1,14 +1,50 @@
-import { useState } from "react";
-import { Button, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+  ProgressBarAndroid,
+} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { editPlant } from "../../JS/actions/plantactions";
 
 const PlantPage = ({ changeViewHome, Data }) => {
+  const [progress, setProgress] = useState(Number);
+
+  useEffect(() => {
+    if (Data.timerEnd) {
+      const timer = () => {
+        var date = moment().format("YYYY-MM-DD hh:mm:ss");
+        var expirydate = Data.timerEnd;
+        var diffr = moment.duration(moment(expirydate).diff(moment(date)));
+        var hours = parseInt(diffr.asHours());
+        var minutes = parseInt(diffr.minutes());
+        var seconds = parseInt(diffr.seconds());
+        var timeLeft = hours * 60 * 60 + minutes * 60 + seconds;
+        const remap = (value, sourceMin, sourceMax, destMin = 0, destMax = 1) =>
+          destMin +
+          ((value - sourceMin) / (sourceMax - sourceMin)) * (destMax - destMin);
+
+        let date1 = new Date(Data.timerStart);
+        let date2 = new Date(Data.timerEnd);
+        var dif = Math.abs(date1 - date2) / 1000;
+
+        setProgress(remap(timeLeft, 0, dif));
+      };
+      timer();
+      // const interval = setInterval(() => {
+      //   timer();
+      // }, 1000);
+    }
+  }, []);
+
   const dispatch = useDispatch();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [waterDate, setWaterDate] = useState("");
+
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
@@ -16,16 +52,22 @@ const PlantPage = ({ changeViewHome, Data }) => {
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
-const dodo = waterDate
+
   const handleConfirm = (date) => {
     const time = moment(date).format("YYYY-MM-DD hh:mm:ss");
-    setWaterDate(time);
+
     hideDatePicker();
-    dispatch(editPlant({ timerEnd: dodo, plantID: Data._id,timerStart: moment().format("YYYY-MM-DD hh:mm:ss"), user:Data.user}));
+    dispatch(
+      editPlant({
+        timerEnd: time,
+        plantID: Data._id,
+        timerStart: moment().format("YYYY-MM-DD hh:mm:ss"),
+        user: Data.user,
+      })
+    );
   };
 
-  console.log(waterDate);
-
+  const endDate = moment(Data.timerEnd).format("MMMM Do YYYY, h:mm ");
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -43,6 +85,19 @@ const dodo = waterDate
           minimumDate={new Date()}
         />
       </View>
+      {progress <= 0 || !Data.timerEnd ? (
+        ""
+      ) : (
+        <View style={styles.Progress}>
+          <ProgressBarAndroid
+            styleAttr="Horizontal"
+            indeterminate={false}
+            progress={progress}
+            color={"#1B9BE0"}
+          />
+        </View>
+      )}
+      {progress <= 0 || !Data.timerEnd ? "" : <Text>{endDate}</Text>}
     </SafeAreaView>
   );
 };

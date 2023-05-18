@@ -25,19 +25,31 @@ module.exports.getallPlants = async (req, res) => {
   }
 };
 
-module.exports.updateOffer = async (req, res) => {
+// module.exports.deleteOffer = async (req, res) => {
+//   try {
+//     const { offerid } = req.params;
+
+//     const offerStatus = await offerModel.findOne({ _id: offerid });
+
+//     if (offerStatus.status == "declined" || offerStatus.status == "active") {
+//       return res.send({
+//         msg: "The Sitter already accepted or declined the offer",
+//       });
+//     }
+
+//     const deleteOffer = await offerModel.findByIdAndRemove(offerid);
+//     res.send({ msg: "offer deleted successfully" });
+//   } catch (error) {
+//     res.send({ msg: error.message });
+//   }
+// };
+
+module.exports.updatePlant = async (req, res) => {
   try {
-    const { idoffer } = req.body;
-    const { status } = req.body;
-
-    const offerState = await offerModel.findOne({ _id: idoffer });
-
-    if (offerState == null) {
-      return res.send({ msg: "The Sitter deleted the offer" });
-    }
-
-    const offerStatus = await offerModel.findByIdAndUpdate(
-      idoffer,
+    const { plantID } = req.body;
+    const { timerEnd } = req.body;
+    const plant = await plantModel.findByIdAndUpdate(
+      plantID,
       {
         $set: {
           ...req.body,
@@ -45,34 +57,7 @@ module.exports.updateOffer = async (req, res) => {
       },
       { new: true }
     );
-    res.send({
-      offerStatus: offerStatus,
-      msg:
-        status == "active"
-          ? "Offer accepted"
-          : status == "declined"
-          ? "Offer declined"
-          : "",
-    });
-  } catch (error) {
-    res.send({ msg: error.message });
-  }
-};
-
-module.exports.deleteOffer = async (req, res) => {
-  try {
-    const { offerid } = req.params;
-
-    const offerStatus = await offerModel.findOne({ _id: offerid });
-
-    if (offerStatus.status == "declined" || offerStatus.status == "active") {
-      return res.send({
-        msg: "The Sitter already accepted or declined the offer",
-      });
-    }
-
-    const deleteOffer = await offerModel.findByIdAndRemove(offerid);
-    res.send({ msg: "offer deleted successfully" });
+    res.send({ plant: plant, msg: `timer is set to ${timerEnd}` });
   } catch (error) {
     res.send({ msg: error.message });
   }
