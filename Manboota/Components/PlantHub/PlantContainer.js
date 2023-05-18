@@ -5,6 +5,7 @@ import {
   Text,
   View,
   ProgressBarAndroid,
+  ImageBackground,
 } from "react-native";
 import moment from "moment";
 
@@ -37,10 +38,45 @@ const PlantContainer = ({ data }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={data.type === "tree" ? styles.treeBox : styles.plantBox}>
+      <ImageBackground
+        imageStyle={
+          data.type === "tree"
+            ? {
+                borderRadius: 20,
+                borderWidth: 1,
+                borderRadius: 20,
+                borderColor: "#ec8f0a",
+              }
+            : {
+                borderRadius: 20,
+                borderWidth: 1,
+                borderRadius: 20,
+                borderColor: "#7EE068",
+              }
+        }
+        resizeMode="cover"
+        source={
+          data.type === "tree"
+            ? require("../../assets/TreeIcon.png")
+            : require("../../assets/PlantIcon.png")
+        }
+        style={data.type === "tree" ? styles.treeBox : styles.plantBox}
+      >
         <View style={styles.Content}>
-          <Text>{data.name}</Text>
-          <Text>{data.species}</Text>
+          <Text
+            style={{ color: "white" }}
+            numberOfLines={1}
+            ellipsizeMode="head"
+          >
+            {data.name}
+          </Text>
+          <Text
+            style={{ color: "white" }}
+            numberOfLines={1}
+            ellipsizeMode="head"
+          >
+            {data.species}
+          </Text>
           {progress <= 0 || !data.timerEnd ? (
             ""
           ) : (
@@ -49,12 +85,12 @@ const PlantContainer = ({ data }) => {
                 styleAttr="Horizontal"
                 indeterminate={false}
                 progress={progress}
-                color={"#1B9BE0"}
+                color={"white"}
               />
             </View>
           )}
         </View>
-      </View>
+      </ImageBackground>
     </SafeAreaView>
   );
 };
@@ -69,12 +105,22 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 10,
     width: "80%",
-    borderWidth: 1,
+
     borderRadius: 20,
-    borderColor: "#ec8f0a",
+
     width: 100,
     height: 100,
     padding: 10,
+
+    backgroundColor: "#ec8f0a",
+    shadowColor: "#ec8f0a",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   plantBox: {
     display: "flex",
@@ -82,12 +128,22 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     gap: 10,
     width: "80%",
-    borderWidth: 1,
+
     borderRadius: 20,
-    borderColor: "#7EE068",
+
     width: 100,
     height: 100,
     padding: 10,
+
+    backgroundColor: "#7EE068",
+    shadowColor: "#7EE068",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   Content: {
     display: "flex",
@@ -95,7 +151,8 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   Progress: {
-    transform: [{ scaleX: 1.5 }, { scaleY: 2 }, { translateX: 9 }],
+    transform: [{ scaleX: 1.3 }, { scaleY: 2 }, { translateX: 8 }],
+    borderRadius:200
   },
 });
 

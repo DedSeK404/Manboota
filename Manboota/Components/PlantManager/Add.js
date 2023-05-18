@@ -110,8 +110,8 @@ const Add = () => {
 
       <View>
         <Modal
-          animationType="slide"
-          transparent={true}
+          animationType="fade"
+          transparent={false}
           visible={modalVisible}
           onRequestClose={() => {
             setStyle(!style);
@@ -163,8 +163,8 @@ const Add = () => {
       {/* plant modal */}
       <View>
         <Modal
-          animationType="slide"
-          transparent={true}
+          animationType="fade"
+          transparent={false}
           visible={plantmodalVisible}
           onRequestClose={() => {
             setplantStyle(!plantstyle);

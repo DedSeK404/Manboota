@@ -77,7 +77,15 @@ const Plants = ({ changeView }) => {
           />
         </Pressable>
       </View>
-      <View style={styles.scrollableContainer}>
+      <View
+        style={
+          all
+            ? styles.scrollableContainerBlue
+            : treeStyle
+            ? styles.scrollableContainerTree
+            : styles.scrollableContainerPlant
+        }
+      >
         <View style={{ flex: 1 }}>
           <View style={styles.list}>
             {loading ? (
@@ -92,7 +100,7 @@ const Plants = ({ changeView }) => {
                 )}
                 keyExtractor={(item) => item._id}
                 numColumns={3}
-                style={{ height: 400 }}
+                style={{ height: 265 }}
               />
             )}
           </View>
@@ -183,8 +191,22 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     gap: 20,
   },
-  scrollableContainer: {
-    height: "67%",
+  scrollableContainerBlue: {
+    height: "45%",
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "#0a84ec",
+    marginTop: 25,
+  },
+  scrollableContainerTree: {
+    height: "45%",
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "#ec8f0a",
+    marginTop: 25,
+  },
+  scrollableContainerPlant: {
+    height: "45%",
     borderWidth: 1,
     borderRadius: 20,
     borderColor: "#7EE068",
