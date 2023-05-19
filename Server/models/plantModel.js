@@ -8,6 +8,7 @@ const plantSchema = new mongoose.Schema({
   creationDate: { type: Date, default: new Date() },
   timerStart: { type: String },
   timerEnd: { type: String },
+  editDate: { type: Date },
   timerRepeat: { type: String },
   user: { type: mongoose.Types.ObjectId, ref: "users" },
 });

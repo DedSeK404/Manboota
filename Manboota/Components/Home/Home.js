@@ -15,6 +15,7 @@ import * as SecureStore from "expo-secure-store";
 import Plants from "../PlantHub/Plants";
 import { getallplants } from "../../JS/actions/plantactions";
 import PlantPage from "../PlantHub/PlantPage";
+import Upcoming from "../PlantHub/Upcoming";
 
 const Home = ({ LoginSetter }) => {
   const dispatch = useDispatch();
@@ -64,9 +65,14 @@ const Home = ({ LoginSetter }) => {
           <Add />
         </View>
         {showPage ? (
-          <View style={styles.plants}>
-            <Plants changeView={changeView} setPlantPage={setPlantPage} />
-          </View>
+          <>
+            <View style={styles.plants}>
+              <Plants changeView={changeView} setPlantPage={setPlantPage} />
+            </View>
+            <View style={styles.upcoming}>
+              <Upcoming />
+            </View>
+          </>
         ) : (
           <View style={styles.plants}>
             <PlantPage changeViewHome={changeViewHome} Data={plantPage} />
@@ -79,10 +85,11 @@ const Home = ({ LoginSetter }) => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     display: "flex",
     flexDirection: "column",
     height: "100%",
-    justifyContent: "space-between",
+    justifyContent: "space-around",
     gap: 30,
   },
   header: {
@@ -128,14 +135,18 @@ const styles = StyleSheet.create({
     height: 60,
   },
   Add: {
-    flex: 1,
-    marginTop: 30,
+    paddingTop: 20,
     alignItems: "center",
   },
   plants: {
-    flex: 1,
-    marginTop: -490,
+    paddingTop: 20,
     alignItems: "center",
+    height: 400,
+  },
+  upcoming: {
+    flex: 1,
+    alignItems: "center",
+    
   },
 });
 

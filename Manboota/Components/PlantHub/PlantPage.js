@@ -36,9 +36,6 @@ const PlantPage = ({ changeViewHome, Data }) => {
         setProgress(remap(timeLeft, 0, dif));
       };
       timer();
-      // const interval = setInterval(() => {
-      //   timer();
-      // }, 1000);
     }
   }, []);
 
@@ -63,6 +60,7 @@ const PlantPage = ({ changeViewHome, Data }) => {
         plantID: Data._id,
         timerStart: moment().format("YYYY-MM-DD hh:mm:ss"),
         user: Data.user,
+        editDate: date,
       })
     );
   };

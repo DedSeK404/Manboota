@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Pressable,
   Image,
+  Text,
 } from "react-native";
 import PlantContainer from "./PlantContainer";
 import { useSelector } from "react-redux";
@@ -46,66 +47,97 @@ const Plants = ({ changeView }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.pressableContainer}>
-        <Pressable
-          style={all ? styles.pressableAllActive : styles.pressableAll}
-          onPress={setAll}
-        >
-          <Image
-            style={all ? styles.allIconActive : styles.allIcon}
-            source={require("../../assets/All.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={treeStyle ? styles.pressableTreeActive : styles.pressableTree}
-          onPress={treeOnlyFilter}
-        >
-          <Image
-            style={treeStyle ? styles.treeIconActive : styles.treeIcon}
-            source={require("../../assets/TreesOnly.png")}
-          />
-        </Pressable>
-        <Pressable
-          style={
-            plantStyle ? styles.pressablePlantActive : styles.pressablePlant
-          }
-          onPress={plantOnlyFilter}
-        >
-          <Image
-            style={plantStyle ? styles.plantIconActive : styles.plantIcon}
-            source={require("../../assets/PlantsOnly.png")}
-          />
-        </Pressable>
-      </View>
-      <View
-        style={
-          all
-            ? styles.scrollableContainerBlue
-            : treeStyle
-            ? styles.scrollableContainerTree
-            : styles.scrollableContainerPlant
-        }
-      >
-        <View style={{ flex: 1 }}>
-          <View style={styles.list}>
-            {loading ? (
-              <ActivityIndicator size="large" color="#7EE068" />
-            ) : (
-              <FlatList
-                data={plantFilter || treeFilter || plants}
-                renderItem={({ item }) => (
-                  <Pressable onPress={() => changeView(item)}>
-                    <PlantContainer data={item} />
-                  </Pressable>
-                )}
-                keyExtractor={(item) => item._id}
-                numColumns={3}
-                style={{ height: 265 }}
+      {plants.length === 0 ? (
+        <Image
+          style={{
+            flex: 1,
+            resizeMode: "contain",
+            borderWidth: 1,
+            borderColor: "#07EE06",
+            width: 350,
+            borderRadius: 20,
+            marginBottom: 20,
+          }}
+          source={require("../../assets/Catalogue.png")}
+        />
+      ) : (
+        <>
+          <View style={styles.pressableContainer}>
+            <Pressable
+              style={all ? styles.pressableAllActive : styles.pressableAll}
+              onPress={setAll}
+            >
+              <Image
+                style={all ? styles.allIconActive : styles.allIcon}
+                source={require("../../assets/All.png")}
               />
+            </Pressable>
+            <Pressable
+              style={
+                treeStyle ? styles.pressableTreeActive : styles.pressableTree
+              }
+              onPress={treeOnlyFilter}
+            >
+              <Image
+                style={treeStyle ? styles.treeIconActive : styles.treeIcon}
+                source={require("../../assets/TreesOnly.png")}
+              />
+            </Pressable>
+            <Pressable
+              style={
+                plantStyle ? styles.pressablePlantActive : styles.pressablePlant
+              }
+              onPress={plantOnlyFilter}
+            >
+              <Image
+                style={plantStyle ? styles.plantIconActive : styles.plantIcon}
+                source={require("../../assets/PlantsOnly.png")}
+              />
+            </Pressable>
+          </View>
+          <View
+            style={
+              all
+                ? styles.scrollableContainerBlue
+                : treeStyle
+                ? styles.scrollableContainerTree
+                : styles.scrollableContainerPlant
+            }
+          >
+            {treeFilter && treeFilter.length == 0 ? (
+              <Image
+                resizeMode="contain"
+                style={{ flex: 1, width: "100%" }}
+                source={require("../../assets/Notrees.png")}
+              />
+            ) : plantFilter && plantFilter.length == 0 ? (
+              <Image
+                resizeMode="contain"
+                style={{ flex: 1, width: "100%" }}
+                source={require("../../assets/Noplants.png")}
+              />
+            ) : (
+              <View style={styles.list}>
+                {loading ? (
+                  <ActivityIndicator size="large" color="#7EE068" />
+                ) : (
+                  <FlatList
+                    data={plantFilter || treeFilter || plants}
+                    renderItem={({ item }) => (
+                      <Pressable onPress={() => changeView(item)}>
+                        <PlantContainer data={item} />
+                      </Pressable>
+                    )}
+                    keyExtractor={(item) => item._id}
+                    numColumns={3}
+                    style={{ height: 265 }}
+                  />
+                )}
+              </View>
             )}
           </View>
-        </View>
-      </View>
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -192,21 +224,21 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   scrollableContainerBlue: {
-    height: "45%",
+    height: 270,
     borderWidth: 1,
     borderRadius: 20,
     borderColor: "#0a84ec",
     marginTop: 25,
   },
   scrollableContainerTree: {
-    height: "45%",
+    height: 270,
     borderWidth: 1,
     borderRadius: 20,
     borderColor: "#ec8f0a",
     marginTop: 25,
   },
   scrollableContainerPlant: {
-    height: "45%",
+    height: 270,
     borderWidth: 1,
     borderRadius: 20,
     borderColor: "#7EE068",

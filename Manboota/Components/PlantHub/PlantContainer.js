@@ -35,7 +35,7 @@ const PlantContainer = ({ data }) => {
       timer();
     }
   }, []);
-
+  
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
   },
   Progress: {
     transform: [{ scaleX: 1.3 }, { scaleY: 2 }, { translateX: 8 }],
-    borderRadius:200
   },
 });
 
