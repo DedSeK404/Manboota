@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 
 const Upcoming = () => {
-  const plants = useSelector((state) => state.plantR.plants);
+  const plants = useSelector((state) => state.plantR.plants); 
   var now = moment(new Date());
   const found = plants.every(
     (plant) => moment(plant.editDate).diff(now, "seconds") <= 0

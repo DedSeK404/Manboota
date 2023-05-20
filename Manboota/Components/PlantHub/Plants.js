@@ -10,15 +10,28 @@ import {
   Text,
 } from "react-native";
 import PlantContainer from "./PlantContainer";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { RefreshControl } from "react-native";
+import { getallplants } from "../../JS/actions/plantactions";
 const Plants = ({ changeView }) => {
+  const dispatch = useDispatch();
   const plants = useSelector((state) => state.plantR.plants);
   const loading = useSelector((state) => state.plantR.loading);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [treeFilter, setTreeFilter] = useState("");
   const [plantFilter, setPlantFilter] = useState("");
+  const currentUser = useSelector((state) => state.userR.currentUser);
 
+  const ID = currentUser._id;
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    if (ID) {
+      dispatch(getallplants(ID));
+    }
+
+    setRefreshing(false);
+  }, []);
   const [all, setAllStyle] = useState(true);
   const [treeStyle, setTreeStyle] = useState(false);
   const [plantStyle, setPlantStyle] = useState(false);
@@ -119,7 +132,15 @@ const Plants = ({ changeView }) => {
             ) : (
               <View style={styles.list}>
                 {loading ? (
-                  <ActivityIndicator size="large" color="#7EE068" />
+                  <ActivityIndicator
+                    style={{
+                      flex: 1,
+                      justifyContent: "center",
+                      marginTop: 120,
+                    }}
+                    size="large"
+                    color="#7EE068"
+                  />
                 ) : (
                   <FlatList
                     data={plantFilter || treeFilter || plants}
@@ -130,6 +151,12 @@ const Plants = ({ changeView }) => {
                     )}
                     keyExtractor={(item) => item._id}
                     numColumns={3}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                     style={{ height: 265 }}
                   />
                 )}

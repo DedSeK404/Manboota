@@ -11,31 +11,39 @@ import moment from "moment";
 
 const PlantContainer = ({ data }) => {
   const [progress, setProgress] = useState(Number);
+  var now = moment(new Date());
 
   useEffect(() => {
-    if (data.timerEnd) {
-      const timer = () => {
-        var date = moment().format("YYYY-MM-DD hh:mm:ss");
-        var expirydate = data.timerEnd;
-        var diffr = moment.duration(moment(expirydate).diff(moment(date)));
-        var hours = parseInt(diffr.asHours());
-        var minutes = parseInt(diffr.minutes());
-        var seconds = parseInt(diffr.seconds());
-        var timeLeft = hours * 60 * 60 + minutes * 60 + seconds;
-        const remap = (value, sourceMin, sourceMax, destMin = 0, destMax = 1) =>
-          destMin +
-          ((value - sourceMin) / (sourceMax - sourceMin)) * (destMax - destMin);
+    // if (data.timerEnd) {
+    //   const timer = () => {
+    //     var date = moment().format("YYYY-MM-DD hh:mm:ss");
+    //     var expirydate = data.timerEnd;
+    //     var diffr = moment.duration(moment(expirydate).diff(moment(date)));
+    //     var hours = parseInt(diffr.asHours());
+    //     var minutes = parseInt(diffr.minutes());
+    //     var seconds = parseInt(diffr.seconds());
+    //     var timeLeft = hours * 60 * 60 + minutes * 60 + seconds;
+    //     const remap = (value, sourceMin, sourceMax, destMin = 0, destMax = 1) =>
+    //       destMin +
+    //       ((value - sourceMin) / (sourceMax - sourceMin)) * (destMax - destMin);
+    //     let date1 = new Date(data.timerStart);
+    //     let date2 = new Date(data.timerEnd);
+    //     var dif = Math.abs(date1 - date2) / 1000;
+    //     setProgress(remap(timeLeft, 0, dif));
+    //   };
+    //   timer();
+    // }
 
-        let date1 = new Date(data.timerStart);
-        let date2 = new Date(data.timerEnd);
-        var dif = Math.abs(date1 - date2) / 1000;
+    const isTime = moment(data.editDate).diff(now, "seconds");
+    let date1 = new Date(data.timerStart);
+    let date2 = new Date(data.timerEnd);
+    var dif = Math.abs(date1 - date2) / 1000;
 
-        setProgress(remap(timeLeft, 0, dif));
-      };
-      timer();
-    }
-  }, []);
-  
+    const time = ((isTime - 0) / (dif - 0)) * (1 - 0);
+
+    setProgress(time);
+  }, [progress]);
+
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
