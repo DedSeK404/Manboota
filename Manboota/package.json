@@ -25,6 +25,7 @@
     "react-native-gesture-handler": "~2.9.0",
     "react-native-modal-datetime-picker": "^15.0.1",
     "react-native-modern-datepicker": "^1.0.0-beta.91",
+    "react-native-select-dropdown": "^3.3.3",
     "react-native-video": "^5.2.1",
     "react-native-web": "~0.18.11",
     "react-redux": "^8.0.5",

@@ -152,8 +152,8 @@ const styles = StyleSheet.create({
     color: "#7EE068",
   },
   Image: {
-    width: 120,
-    height: 140,
+    width: 125,
+    height: 150,
     justifyContent: "center",
     alignSelf: "center",
     marginTop: 50,
