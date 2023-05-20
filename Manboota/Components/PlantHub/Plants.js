@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -13,6 +13,7 @@ import PlantContainer from "./PlantContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { RefreshControl } from "react-native";
 import { getallplants } from "../../JS/actions/plantactions";
+
 const Plants = ({ changeView }) => {
   const dispatch = useDispatch();
   const plants = useSelector((state) => state.plantR.plants);
@@ -22,8 +23,8 @@ const Plants = ({ changeView }) => {
   const [treeFilter, setTreeFilter] = useState("");
   const [plantFilter, setPlantFilter] = useState("");
   const currentUser = useSelector((state) => state.userR.currentUser);
-
   const ID = currentUser._id;
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     if (ID) {

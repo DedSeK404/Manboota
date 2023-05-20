@@ -16,11 +16,14 @@ import Plants from "../PlantHub/Plants";
 import { getallplants } from "../../JS/actions/plantactions";
 import PlantPage from "../PlantHub/PlantPage";
 import Upcoming from "../PlantHub/Upcoming";
+import AddTree from "../PlantManager/AddTree";
+import AddPlant from "../PlantManager/AddPlant";
 
 const Home = ({ LoginSetter }) => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.userR.currentUser);
   const loading = useSelector((state) => state.userR.authloading);
+
   useEffect(() => {
     async function getValueForUserID() {
       let userID = await SecureStore.getItemAsync("currentUser");
@@ -31,6 +34,7 @@ const Home = ({ LoginSetter }) => {
   }, []);
   const [plantPage, setPlantPage] = useState("");
   const [showPage, setShowPage] = useState(true);
+
   const changeView = (data) => {
     setPlantPage(data);
     setShowPage(!showPage);
@@ -39,6 +43,20 @@ const Home = ({ LoginSetter }) => {
     setShowPage(!showPage);
   };
 
+  const [showAddTree, setShowAddTree] = useState(false);
+  const [showAddPlant, setShowAddPlant] = useState(false);
+  const handleShowTree = (bool) => {
+    setShowAddTree(bool);
+    setShowAddPlant(false);
+    setPlantStyleAdd(true);
+  };
+  const handleShowPlant = (bool) => {
+    setShowAddPlant(bool);
+    setShowAddTree(false);
+    setStyleAdd(true);
+  };
+  const [styleAdd, setStyleAdd] = useState(true);
+  const [stylePlantAdd, setPlantStyleAdd] = useState(true);
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -62,21 +80,39 @@ const Home = ({ LoginSetter }) => {
           </Pressable>
         </View>
         <View style={styles.Add}>
-          <Add />
+          <Add
+            handleShowTree={handleShowTree}
+            handleShowPlant={handleShowPlant}
+            setPlantStyleAdd={setPlantStyleAdd}
+            setStyleAdd={setStyleAdd}
+            styleAdd={styleAdd}
+            stylePlantAdd={stylePlantAdd}
+          />
         </View>
-        {showPage ? (
-          <>
-            <View style={styles.plants}>
-              <Plants changeView={changeView} setPlantPage={setPlantPage} />
-            </View>
-            <View style={styles.upcoming}>
-              <Upcoming />
-            </View>
-          </>
+        {showAddTree ? (
+          <AddTree setStyleAdd={setStyleAdd} handleShowTree={handleShowTree} />
+        ) : showAddPlant ? (
+          <AddPlant
+            setPlantStyleAdd={setPlantStyleAdd}
+            handleShowPlant={handleShowPlant}
+          />
         ) : (
-          <View style={styles.plants}>
-            <PlantPage changeViewHome={changeViewHome} Data={plantPage} />
-          </View>
+          <>
+            {showPage ? (
+              <>
+                <View style={styles.plants}>
+                  <Plants changeView={changeView} setPlantPage={setPlantPage} />
+                </View>
+                <View style={styles.upcoming}>
+                  <Upcoming />
+                </View>
+              </>
+            ) : (
+              <View style={styles.plants}>
+                <PlantPage changeViewHome={changeViewHome} Data={plantPage} />
+              </View>
+            )}
+          </>
         )}
       </ImageBackground>
     </SafeAreaView>
@@ -146,7 +182,6 @@ const styles = StyleSheet.create({
   upcoming: {
     flex: 1,
     alignItems: "center",
-    
   },
 });
 
