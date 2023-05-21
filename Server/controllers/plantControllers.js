@@ -25,29 +25,11 @@ module.exports.getallPlants = async (req, res) => {
   }
 };
 
-// module.exports.deleteOffer = async (req, res) => {
-//   try {
-//     const { offerid } = req.params;
-
-//     const offerStatus = await offerModel.findOne({ _id: offerid });
-
-//     if (offerStatus.status == "declined" || offerStatus.status == "active") {
-//       return res.send({
-//         msg: "The Sitter already accepted or declined the offer",
-//       });
-//     }
-
-//     const deleteOffer = await offerModel.findByIdAndRemove(offerid);
-//     res.send({ msg: "offer deleted successfully" });
-//   } catch (error) {
-//     res.send({ msg: error.message });
-//   }
-// };
-
 module.exports.updatePlant = async (req, res) => {
   try {
     const { plantID } = req.body;
     const { timerEnd } = req.body;
+
     const plant = await plantModel.findByIdAndUpdate(
       plantID,
       {
@@ -69,7 +51,24 @@ module.exports.updatePlant = async (req, res) => {
         msg: `Your repeating timer was cancelled`,
       });
     }
+    if (req.body.token) {
+      return res.send({
+        plant: plant,
+        msg: `Changes were successful`,
+      });
+    }
     res.send({ plant: plant, msg: `timer is set to ${timerEnd}` });
+  } catch (error) {
+    res.send({ msg: error.message });
+  }
+};
+
+module.exports.deletePlant = async (req, res) => {
+  try {
+    const { plantID } = req.params;
+
+    const plant = await plantModel.findByIdAndRemove(plantID);
+    res.send({ msg: "Plant deleted successfully" });
   } catch (error) {
     res.send({ msg: error.message });
   }

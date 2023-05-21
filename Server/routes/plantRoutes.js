@@ -3,6 +3,7 @@ const {
   addPlant,
   getallPlants,
   updatePlant,
+  deletePlant,
 } = require("../controllers/plantControllers");
 const {
   validator,
@@ -32,4 +33,11 @@ router.get("/:user", getallPlants);
  */
 router.patch("/edit", updatePlant);
 
+
+/**
+ * @route delete /plant/delete/${plantID}
+ * @description delete plant
+ * @access protected
+ */
+router.delete("/delete/:plantID", deletePlant);
 module.exports = router;

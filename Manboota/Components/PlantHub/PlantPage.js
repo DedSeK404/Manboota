@@ -121,9 +121,21 @@ const PlantPage = ({ changeViewHome, Data }) => {
         source={require("../../assets/WateringBackground.png")}
         style={styles.container}
       >
-        <View style={styles.ID}>
-          <Text style={{ color: "#8a8989" }}>{Data.species}</Text>
-          <Text style={{ color: "#8a8989" }}>{Data.name}</Text>
+        <View style={Data.type === "tree" ? styles.IDtree : styles.IDplant}>
+          <Text
+            style={
+              Data.type === "tree" ? { color: "#ec8f0a" } : { color: "#7EE068" }
+            }
+          >
+            {Data.species}
+          </Text>
+          <Text
+            style={
+              Data.type === "tree" ? { color: "#ec8f0a" } : { color: "#7EE068" }
+            }
+          >
+            {Data.name}
+          </Text>
         </View>
         {/* onTimeReminder */}
         <View style={styles.timers}>
@@ -435,13 +447,24 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     marginTop: 10,
   },
-  ID: {
+  IDtree: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     borderRadius: 20,
-    borderColor: "#8a8989",
+    borderColor: "#ec8f0a",
+    borderWidth: 1,
+    padding: 10,
+    backgroundColor: "white",
+  },
+  IDplant: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    borderRadius: 20,
+    borderColor: "#7EE068",
     borderWidth: 1,
     padding: 10,
     backgroundColor: "white",

@@ -12,7 +12,7 @@ const Upcoming = () => {
   const repeat = plants.every(
     (plant) => moment(plant.timerRepeat).diff(now, "seconds") <= 0
   );
-  console.log(repeat);
+  console.log(plants);
   return (
     <SafeAreaView style={styles.container}>
       {plants.length === 0 ? (
@@ -75,7 +75,7 @@ const Upcoming = () => {
               {plants.map((plant) => (
                 <>
                   {moment(plant.timerRepeat).diff(now, "seconds") <= 0 ||
-                  !plant.timerRepeat ? (
+                  plant.timerRepeat === "cancelled" ? (
                     ""
                   ) : (
                     <View key={plant._id} style={styles.eventContainerRepeat}>

@@ -8,6 +8,7 @@ import {
   Pressable,
   Image,
   Text,
+  ImageBackground,
 } from "react-native";
 import PlantContainer from "./PlantContainer";
 import { useDispatch, useSelector } from "react-redux";
@@ -57,6 +58,12 @@ const Plants = ({ changeView }) => {
     setTreeStyle(false);
     setPlantStyle(false);
     setAllStyle(true);
+  };
+  const [showEdit, setShowEdit] = useState("");
+  const [showEditBool, setShowEditBool] = useState(false);
+  const handleShow = (ID) => {
+    setShowEdit(ID);
+    setShowEditBool(!showEditBool);
   };
 
   return (
@@ -131,13 +138,18 @@ const Plants = ({ changeView }) => {
                 source={require("../../assets/Noplants.png")}
               />
             ) : (
-              <View style={styles.list}>
+              <ImageBackground
+                source={require("../../assets/plantsBackground.png")}
+                resizeMode="cover"
+                style={styles.list}
+              >
                 {loading ? (
                   <ActivityIndicator
                     style={{
                       flex: 1,
                       justifyContent: "center",
-                      marginTop: 120,
+                      marginTop: 0,
+                      height: 265,
                     }}
                     size="large"
                     color="#7EE068"
@@ -146,8 +158,15 @@ const Plants = ({ changeView }) => {
                   <FlatList
                     data={plantFilter || treeFilter || plants}
                     renderItem={({ item }) => (
-                      <Pressable onPress={() => changeView(item)}>
-                        <PlantContainer data={item} />
+                      <Pressable
+                        onPress={() => changeView(item)}
+                        onLongPress={() => handleShow(item._id)}
+                      >
+                        <PlantContainer
+                          showEditBool={showEditBool}
+                          showEdit={showEdit}
+                          data={item}
+                        />
                       </Pressable>
                     )}
                     keyExtractor={(item) => item._id}
@@ -161,7 +180,7 @@ const Plants = ({ changeView }) => {
                     style={{ height: 265 }}
                   />
                 )}
-              </View>
+              </ImageBackground>
             )}
           </View>
         </>
@@ -249,7 +268,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 20,
+    gap: 10,
   },
   scrollableContainerBlue: {
     height: 270,
