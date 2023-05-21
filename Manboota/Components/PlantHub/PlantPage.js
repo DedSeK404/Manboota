@@ -10,6 +10,7 @@ import {
   Image,
   TextInput,
   ImageBackground,
+  Alert,
 } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import moment from "moment";
@@ -18,30 +19,71 @@ import { editPlant } from "../../JS/actions/plantactions";
 import SelectDropdown from "react-native-select-dropdown";
 
 const PlantPage = ({ changeViewHome, Data }) => {
+  var now = moment(new Date());
+
+  const [dayNumbers, setDayNumbers] = useState(Number);
+  const [month, setMonth] = useState("");
+  const [isSet, setIsSet] = useState(
+    Data.timerRepeat === "cancelled" || !Data.timerRepeat ? false : true
+  );
+  var repeatTime = moment().add(month, dayNumbers);
+
+  const isTimeRemaining = moment(Data.timerRepeat).diff(now, "seconds");
+
+  useEffect(() => {
+    if (isTimeRemaining < 0) {
+      Alert.alert("Timer", `you need to water ${Data.name}`);
+    }
+  }, []);
+
+  const handleConfirmRepeat = () => {
+    if (!dayNumbers) {
+      return Alert.alert("Timer", "you left the timer input empty");
+    }
+    if (!month) {
+      return Alert.alert(
+        "Timer",
+        "you didn't select an option (minutes/days/months)"
+      );
+    }
+    dispatch(
+      editPlant(
+        {
+          timerRepeat: repeatTime,
+          plantID: Data._id,
+          user: Data.user,
+        },
+        setIsSet
+      )
+    );
+  };
+  const handleEdit = () => {
+    setIsSet(false);
+  };
+  const handleCancel = () => {
+    dispatch(
+      editPlant(
+        {
+          timerRepeat: "cancelled",
+          plantID: Data._id,
+          user: Data.user,
+        },
+        setIsSet
+      )
+    );
+  };
+
   const [progress, setProgress] = useState(Number);
 
   useEffect(() => {
-    if (Data.timerEnd) {
-      const timer = () => {
-        var date = moment().format("YYYY-MM-DD hh:mm:ss");
-        var expirydate = Data.timerEnd;
-        var diffr = moment.duration(moment(expirydate).diff(moment(date)));
-        var hours = parseInt(diffr.asHours());
-        var minutes = parseInt(diffr.minutes());
-        var seconds = parseInt(diffr.seconds());
-        var timeLeft = hours * 60 * 60 + minutes * 60 + seconds;
-        const remap = (value, sourceMin, sourceMax, destMin = 0, destMax = 1) =>
-          destMin +
-          ((value - sourceMin) / (sourceMax - sourceMin)) * (destMax - destMin);
+    const isTime = moment(Data.editDate).diff(now, "seconds");
+    let date1 = new Date(Data.timerStart);
+    let date2 = new Date(Data.timerEnd);
+    var dif = Math.abs(date1 - date2) / 1000;
 
-        let date1 = new Date(Data.timerStart);
-        let date2 = new Date(Data.timerEnd);
-        var dif = Math.abs(date1 - date2) / 1000;
+    const time = ((isTime - 0) / (dif - 0)) * (1 - 0);
 
-        setProgress(remap(timeLeft, 0, dif));
-      };
-      timer();
-    }
+    setProgress(time);
   }, []);
 
   const dispatch = useDispatch();
@@ -69,8 +111,9 @@ const PlantPage = ({ changeViewHome, Data }) => {
       })
     );
   };
-  const Timing = ["Day(s)", "Month(s)"];
+  const Timing = ["minutes", "days", "months"];
   const endDate = moment(Data.timerEnd).format("MMMM Do YYYY, h:mm ");
+  const [sow, setShow] = useState(false);
   return (
     <SafeAreaView style={styles.Box}>
       <ImageBackground
@@ -82,42 +125,122 @@ const PlantPage = ({ changeViewHome, Data }) => {
           <Text style={{ color: "#8a8989" }}>{Data.species}</Text>
           <Text style={{ color: "#8a8989" }}>{Data.name}</Text>
         </View>
+        {/* onTimeReminder */}
         <View style={styles.timers}>
-          <View style={styles.repeat}>
-            <Text style={{ color: "#7EE068" }}>Set a repeating reminder</Text>
-            <View>
-              <TextInput
-                style={styles.input}
-                placeholder="0"
-                placeholderTextColor="#7EE068"
-                keyboardType="numeric"
-                // onChangeText={(text) => handleChange(text, "species")}
-              />
+          <View
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              borderRadius: 20,
+              borderColor: "#7EE068",
+              borderWidth: 1,
+              backgroundColor: "white",
+              gap: -15,
+            }}
+          >
+            <View style={styles.repeat}>
+              <Text style={isSet ? { color: "#8a8989" } : { color: "#7EE068" }}>
+                Set a repeating reminder
+              </Text>
+              <View>
+                <TextInput
+                  style={isSet ? styles.inputFalse : styles.input}
+                  placeholder="0"
+                  placeholderTextColor={isSet ? "#8a8989" : "#7EE068"}
+                  keyboardType="numeric"
+                  editable={isSet ? false : true}
+                  onChangeText={(text) => setDayNumbers(text, "species")}
+                />
+              </View>
+              <View>
+                <SelectDropdown
+                  data={Timing}
+                  onSelect={(selectedItem, index) => {
+                    setMonth(selectedItem);
+                  }}
+                  buttonTextAfterSelection={(selectedItem, index) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item, index) => {
+                    return item;
+                  }}
+                  buttonStyle={
+                    isSet
+                      ? {
+                          borderRadius: 50,
+                          width: 90,
+                          backgroundColor: "#8a8989",
+                          padding: -50,
+                        }
+                      : {
+                          borderRadius: 50,
+                          width: 90,
+                          backgroundColor: "#7EE068",
+                          padding: -50,
+                        }
+                  }
+                  buttonTextStyle={{ color: "white", fontSize: 12 }}
+                  dropdownStyle={{ borderRadius: 20 }}
+                  rowStyle={{ backgroundColor: "#7EE068" }}
+                  rowTextStyle={{ color: "white", fontSize: 12 }}
+                  disabled={isSet ? true : false}
+                />
+              </View>
             </View>
-            <View>
-              <SelectDropdown
-                data={Timing}
-                onSelect={(selectedItem, index) => {
-                  console.log(selectedItem, index);
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                padding: 10,
+              }}
+            >
+              <Pressable
+                style={
+                  isSet
+                    ? { backgroundColor: "#8a8989", borderRadius: 20 }
+                    : { backgroundColor: "#7EE068", borderRadius: 20 }
+                }
+                onPress={handleConfirmRepeat}
+                disabled={isSet ? true : false}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    padding: 18,
+                    width: 80,
+                    textAlign: "center",
+                  }}
+                >
+                  Set
+                </Text>
+              </Pressable>
+              <View
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  gap: 10,
+                  alignItems: "center",
                 }}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
-                buttonStyle={{
-                  borderColor: "red",
-                  borderRadius: 50,
-                  width: 90,
-                  backgroundColor: "#7EE068",
-                  padding: -50,
-                }}
-                buttonTextStyle={{ color: "white", fontSize: 12 }}
-                dropdownStyle={{ borderRadius: 20 }}
-                rowStyle={{ backgroundColor: "#7EE068" }}
-                rowTextStyle={{ color: "white", fontSize: 12 }}
-              />
+              >
+                <Pressable
+                  style={{ backgroundColor: "#0a84ec", borderRadius: 20 }}
+                  onPress={handleEdit}
+                >
+                  <Text style={{ color: "white", fontSize: 24, padding: 10 }}>
+                    ✎
+                  </Text>
+                </Pressable>
+                <Pressable
+                  onPress={handleCancel}
+                  style={{ backgroundColor: "red", borderRadius: 20 }}
+                >
+                  <Text style={{ color: "white", fontSize: 24, padding: 10 }}>
+                    X
+                  </Text>
+                </Pressable>
+              </View>
             </View>
           </View>
 
@@ -154,14 +277,48 @@ const PlantPage = ({ changeViewHome, Data }) => {
                 />
               </View>
               <Image
-                style={{ width: 42, height: 50 }}
+                style={{ width: 34, height: 40 }}
                 source={require("../../assets/WaterLevel.png")}
               />
             </View>
-            <View>
-              <Text style={styles.date}>{endDate}</Text>
+            <View
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <View>
+                <Text style={styles.date}>{endDate}</Text>
+              </View>
+              <View>
+                <Text style={styles.dateR}>
+                  {isTimeRemaining > 1
+                    ? moment(Data.timerRepeat).format("MMMM Do YYYY, h:mm ")
+                    : ""}
+                </Text>
+              </View>
             </View>
           </View>
+        )}
+
+        {isTimeRemaining > 1 && !progress ? (
+          <View
+            style={{
+              borderWidth: 1,
+              borderColor: "#7EE068",
+              borderRadius: 20,
+              backgroundColor: "white",
+              padding: 20,
+              marginTop: 10,
+            }}
+          >
+            <Text style={{ color: "#7EE068", fontSize: 20 }}>
+              {moment(Data.timerRepeat).format("MMMM Do YYYY, h:mm ")}
+            </Text>
+          </View>
+        ) : (
+          ""
         )}
       </ImageBackground>
       <Pressable style={styles.btn} onPress={changeViewHome}>
@@ -183,8 +340,18 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: "white",
-
     color: "#7EE068",
+  },
+  inputFalse: {
+    borderWidth: 1,
+    borderRadius: 30,
+    borderColor: "#8a8989",
+    width: 40,
+    paddingLeft: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    backgroundColor: "white",
+    color: "#8a8989",
   },
   container: {
     padding: 10,
@@ -195,7 +362,7 @@ const styles = StyleSheet.create({
     height: 380,
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
   },
   modalContainer: {
     display: "flex",
@@ -209,7 +376,7 @@ const styles = StyleSheet.create({
   },
 
   Progress: {
-    transform: [{ scaleX: 5.1 }, { scaleY: 10 }, { translateX: 20 }],
+    transform: [{ scaleX: 5.5 }, { scaleY: 8 }, { translateX: 20 }],
   },
   btn: {
     marginTop: 20,
@@ -235,7 +402,11 @@ const styles = StyleSheet.create({
   },
   date: {
     color: "#0a84ec",
-    fontSize: 30,
+    fontSize: 15,
+  },
+  dateR: {
+    color: "#7EE068",
+    fontSize: 15,
   },
   oneTime: {
     display: "flex",
@@ -247,17 +418,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     backgroundColor: "white",
+    marginTop: 10,
   },
   repeat: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderRadius: 20,
-    borderColor: "#7EE068",
-    borderWidth: 1,
     padding: 10,
-    backgroundColor: "white",
   },
   alarms: {
     borderRadius: 20,
@@ -265,6 +433,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     backgroundColor: "white",
+    marginTop: 10,
   },
   ID: {
     display: "flex",
@@ -280,7 +449,8 @@ const styles = StyleSheet.create({
   timers: {
     display: "flex",
     flexDirection: "column",
-    gap: 20,
+    gap: 5,
+    marginTop: 10,
   },
 });
 

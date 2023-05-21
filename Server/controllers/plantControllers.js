@@ -57,6 +57,18 @@ module.exports.updatePlant = async (req, res) => {
       },
       { new: true }
     );
+    if (req.body.timerRepeat && req.body.timerRepeat != "cancelled") {
+      return res.send({
+        plant: plant,
+        msg: `Your repeating timer was set successfully`,
+      });
+    }
+    if (req.body.timerRepeat === "cancelled") {
+      return res.send({
+        plant: plant,
+        msg: `Your repeating timer was cancelled`,
+      });
+    }
     res.send({ plant: plant, msg: `timer is set to ${timerEnd}` });
   } catch (error) {
     res.send({ msg: error.message });

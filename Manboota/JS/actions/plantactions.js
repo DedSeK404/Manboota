@@ -82,11 +82,11 @@ export const getallplants = (user) => async (dispatch) => {
  * @description update plant
  * @access protected
  */
-export const editPlant = (editData) => async (dispatch) => {
+export const editPlant = (editData, setIsSet) => async (dispatch) => {
   dispatch({
     type: PLANTLOADING,
   });
-  console.log(editData);
+
   try {
     const { data } = await axios.patch(baseURL + "edit", editData);
 
@@ -99,6 +99,12 @@ export const editPlant = (editData) => async (dispatch) => {
     );
     dispatch(getallplants(editData.user));
     dispatch({ type: EDITPLANT, payload: data.msg });
+    if (setIsSet) {
+      setIsSet(true);
+    }
+    if (data.msg == "Your repeating timer was cancelled") {
+      setIsSet(false);
+    }
   } catch (error) {
     dispatch({ type: PLANTFAILED, payload: error });
     console.log(error);

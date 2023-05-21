@@ -4,12 +4,15 @@ import { useSelector } from "react-redux";
 import moment from "moment";
 
 const Upcoming = () => {
-  const plants = useSelector((state) => state.plantR.plants); 
+  const plants = useSelector((state) => state.plantR.plants);
   var now = moment(new Date());
   const found = plants.every(
     (plant) => moment(plant.editDate).diff(now, "seconds") <= 0
   );
-
+  const repeat = plants.every(
+    (plant) => moment(plant.timerRepeat).diff(now, "seconds") <= 0
+  );
+  console.log(repeat);
   return (
     <SafeAreaView style={styles.container}>
       {plants.length === 0 ? (
@@ -20,7 +23,7 @@ const Upcoming = () => {
         <>
           <Text style={{ color: "#0a84ec" }}>❮</Text>
           <View style={styles.scrollContainer}>
-            {found ? (
+            {found && repeat ? (
               <View style={styles.eventContainerFound}>
                 <Text style={styles.Text}>You have no upcoming events</Text>
               </View>
@@ -62,6 +65,42 @@ const Upcoming = () => {
                         </Text>
                         <Text style={styles.Text}>
                           {moment().diff(plant.timerEnd, "days")} days 💦
+                        </Text>
+                      </View>
+                    </View>
+                  )}
+                </>
+              ))}
+              {/* repeatTimer */}
+              {plants.map((plant) => (
+                <>
+                  {moment(plant.timerRepeat).diff(now, "seconds") <= 0 ||
+                  !plant.timerRepeat ? (
+                    ""
+                  ) : (
+                    <View key={plant._id} style={styles.eventContainerRepeat}>
+                      <Text
+                        numberOfLines={1}
+                        ellipsizeMode="head"
+                        style={styles.Text}
+                      >
+                        {plant.name}
+                      </Text>
+                      <View
+                        style={{
+                          display: "flex",
+                          flexDirection: "row",
+                          justifyContent: "space-between",
+                          marginRight: 20,
+                        }}
+                      >
+                        <Text style={styles.Text}>
+                          {moment(plant.timerRepeat).format(
+                            "MMMM Do YYYY, h:mm "
+                          )}
+                        </Text>
+                        <Text style={styles.Text}>
+                          {moment().diff(plant.timerRepeat, "days")} days 💦
                         </Text>
                       </View>
                     </View>
@@ -122,6 +161,15 @@ const styles = StyleSheet.create({
   scrollContainer: {
     height: 60,
     width: 352,
+  },
+  eventContainerRepeat: {
+    backgroundColor: "#7EE068",
+    borderRadius: 40,
+    width: 312,
+    justifyContent: "center",
+    paddingLeft: 25,
+    marginRight: 20,
+    marginLeft: 20,
   },
 });
 
