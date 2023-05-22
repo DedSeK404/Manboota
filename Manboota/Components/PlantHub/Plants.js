@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -7,13 +7,13 @@ import {
   ActivityIndicator,
   Pressable,
   Image,
-  Text,
   ImageBackground,
 } from "react-native";
 import PlantContainer from "./PlantContainer";
 import { useDispatch, useSelector } from "react-redux";
 import { RefreshControl } from "react-native";
 import { getallplants } from "../../JS/actions/plantactions";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const Plants = ({ changeView }) => {
   const dispatch = useDispatch();
@@ -155,30 +155,32 @@ const Plants = ({ changeView }) => {
                     color="#7EE068"
                   />
                 ) : (
-                  <FlatList
-                    data={plantFilter || treeFilter || plants}
-                    renderItem={({ item }) => (
-                      <Pressable
-                        onPress={() => changeView(item)}
-                        onLongPress={() => handleShow(item._id)}
-                      >
-                        <PlantContainer
-                          showEditBool={showEditBool}
-                          showEdit={showEdit}
-                          data={item}
+                  <Animated.View entering={FadeInUp}>
+                    <FlatList
+                      data={plantFilter || treeFilter || plants}
+                      renderItem={({ item }) => (
+                        <Pressable
+                          onPress={() => changeView(item)}
+                          onLongPress={() => handleShow(item._id)}
+                        >
+                          <PlantContainer
+                            showEditBool={showEditBool}
+                            showEdit={showEdit}
+                            data={item}
+                          />
+                        </Pressable>
+                      )}
+                      keyExtractor={(item) => item._id}
+                      numColumns={3}
+                      refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
                         />
-                      </Pressable>
-                    )}
-                    keyExtractor={(item) => item._id}
-                    numColumns={3}
-                    refreshControl={
-                      <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                      />
-                    }
-                    style={{ height: 265 }}
-                  />
+                      }
+                      style={{ height: 265 }}
+                    />
+                  </Animated.View>
                 )}
               </ImageBackground>
             )}

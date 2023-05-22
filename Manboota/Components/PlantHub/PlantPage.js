@@ -17,6 +17,7 @@ import moment from "moment";
 import { useDispatch } from "react-redux";
 import { editPlant } from "../../JS/actions/plantactions";
 import SelectDropdown from "react-native-select-dropdown";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const PlantPage = ({ changeViewHome, Data }) => {
   var now = moment(new Date());
@@ -113,7 +114,8 @@ const PlantPage = ({ changeViewHome, Data }) => {
   };
   const Timing = ["minutes", "days", "months"];
   const endDate = moment(Data.timerEnd).format("MMMM Do YYYY, h:mm ");
-  const [sow, setShow] = useState(false);
+
+  
   return (
     <SafeAreaView style={styles.Box}>
       <ImageBackground
@@ -121,7 +123,7 @@ const PlantPage = ({ changeViewHome, Data }) => {
         source={require("../../assets/WateringBackground.png")}
         style={styles.container}
       >
-        <View style={Data.type === "tree" ? styles.IDtree : styles.IDplant}>
+        <Animated.View entering={FadeInUp.delay(20)} style={Data.type === "tree" ? styles.IDtree : styles.IDplant}>
           <Text
             style={
               Data.type === "tree" ? { color: "#ec8f0a" } : { color: "#7EE068" }
@@ -136,10 +138,10 @@ const PlantPage = ({ changeViewHome, Data }) => {
           >
             {Data.name}
           </Text>
-        </View>
+        </Animated.View>
         {/* onTimeReminder */}
         <View style={styles.timers}>
-          <View
+          <Animated.View entering={FadeInUp.delay(40)}
             style={{
               display: "flex",
               flexDirection: "column",
@@ -254,9 +256,9 @@ const PlantPage = ({ changeViewHome, Data }) => {
                 </Pressable>
               </View>
             </View>
-          </View>
+          </Animated.View>
 
-          <View style={styles.oneTime}>
+          <Animated.View entering={FadeInUp.delay(60)} style={styles.oneTime}>
             <Text style={{ color: "#0a84ec" }}>Set a one time reminder</Text>
             <View>
               <Pressable style={styles.btnDate} onPress={showDatePicker}>
@@ -273,13 +275,13 @@ const PlantPage = ({ changeViewHome, Data }) => {
                 minimumDate={new Date()}
               />
             </View>
-          </View>
+          </Animated.View>
         </View>
         {progress <= 0 || progress > 1 || !Data.timerEnd ? (
           ""
         ) : (
-          <View style={styles.alarms}>
-            <View style={styles.progressBox}>
+          <Animated.View entering={FadeInUp.delay(80)} style={styles.alarms}>
+            <Animated.View entering={FadeInUp.delay(100)} style={styles.progressBox}>
               <View style={styles.Progress}>
                 <ProgressBarAndroid
                   styleAttr="Horizontal"
@@ -292,30 +294,30 @@ const PlantPage = ({ changeViewHome, Data }) => {
                 style={{ width: 34, height: 40 }}
                 source={require("../../assets/WaterLevel.png")}
               />
-            </View>
-            <View
+            </Animated.View>
+            <Animated.View entering={FadeInUp.delay(120)}
               style={{
                 display: "flex",
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
             >
-              <View>
+              <Animated.View entering={FadeInUp.delay(140)}>
                 <Text style={styles.date}>{endDate}</Text>
-              </View>
-              <View>
+              </Animated.View>
+              <Animated.View entering={FadeInUp.delay(160)}>
                 <Text style={styles.dateR}>
                   {isTimeRemaining > 1
                     ? moment(Data.timerRepeat).format("MMMM Do YYYY, h:mm ")
                     : ""}
                 </Text>
-              </View>
-            </View>
-          </View>
+              </Animated.View>
+            </Animated.View>
+          </Animated.View>
         )}
 
-        {isTimeRemaining > 1 && !progress ? (
-          <View
+        {(isTimeRemaining > 1 && progress < 0) || progress > 1 ? (
+          <Animated.View entering={FadeInUp.delay(180)}
             style={{
               borderWidth: 1,
               borderColor: "#7EE068",
@@ -328,14 +330,16 @@ const PlantPage = ({ changeViewHome, Data }) => {
             <Text style={{ color: "#7EE068", fontSize: 20 }}>
               {moment(Data.timerRepeat).format("MMMM Do YYYY, h:mm ")}
             </Text>
-          </View>
+          </Animated.View>
         ) : (
           ""
         )}
       </ImageBackground>
+      <Animated.View entering={FadeInUp.delay(180)}>
       <Pressable style={styles.btn} onPress={changeViewHome}>
         <Text style={styles.back}>Back</Text>
       </Pressable>
+      </Animated.View>
     </SafeAreaView>
   );
 };

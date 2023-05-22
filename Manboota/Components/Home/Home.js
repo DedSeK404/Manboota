@@ -18,6 +18,7 @@ import PlantPage from "../PlantHub/PlantPage";
 import Upcoming from "../PlantHub/Upcoming";
 import AddTree from "../PlantManager/AddTree";
 import AddPlant from "../PlantManager/AddPlant";
+import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 
 const Home = ({ LoginSetter }) => {
   const dispatch = useDispatch();
@@ -79,7 +80,7 @@ const Home = ({ LoginSetter }) => {
             <Text style={styles.logoutText}>logout</Text>
           </Pressable>
         </View>
-        <View style={styles.Add}>
+        <Animated.View entering={FadeInUp} style={styles.Add}>
           <Add
             handleShowTree={handleShowTree}
             handleShowPlant={handleShowPlant}
@@ -88,29 +89,36 @@ const Home = ({ LoginSetter }) => {
             styleAdd={styleAdd}
             stylePlantAdd={stylePlantAdd}
           />
-        </View>
+        </Animated.View>
         {showAddTree ? (
-          <AddTree setStyleAdd={setStyleAdd} handleShowTree={handleShowTree} />
+          <Animated.View entering={FadeInUp}>
+            <AddTree
+              setStyleAdd={setStyleAdd}
+              handleShowTree={handleShowTree}
+            />
+          </Animated.View>
         ) : showAddPlant ? (
-          <AddPlant
-            setPlantStyleAdd={setPlantStyleAdd}
-            handleShowPlant={handleShowPlant}
-          />
+          <Animated.View entering={FadeInUp}>
+            <AddPlant
+              setPlantStyleAdd={setPlantStyleAdd}
+              handleShowPlant={handleShowPlant}
+            />
+          </Animated.View>
         ) : (
           <>
             {showPage ? (
               <>
-                <View style={styles.plants}>
+                <Animated.View entering={FadeInUp} style={styles.plants}>
                   <Plants changeView={changeView} setPlantPage={setPlantPage} />
-                </View>
-                <View style={styles.upcoming}>
+                </Animated.View>
+                <Animated.View entering={FadeIn} style={styles.upcoming}>
                   <Upcoming />
-                </View>
+                </Animated.View>
               </>
             ) : (
-              <View style={styles.plants}>
+              <Animated.View entering={FadeInUp} style={styles.plants}>
                 <PlantPage changeViewHome={changeViewHome} Data={plantPage} />
-              </View>
+              </Animated.View>
             )}
           </>
         )}

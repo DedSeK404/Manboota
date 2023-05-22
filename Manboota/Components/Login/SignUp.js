@@ -104,7 +104,7 @@ const SignUp = ({ navigation }) => {
           />
         </View>
         <Pressable onPress={() => navigation.navigate("SignIn")}>
-          <Text>Don't have an account? Create one here</Text>
+          <Text>Already have an account? Sign in here</Text>
         </Pressable>
         <Pressable style={styles.SignUpBtn} onPress={handleSubmit}>
           <Text style={styles.SignInText}>Sign up</Text>
