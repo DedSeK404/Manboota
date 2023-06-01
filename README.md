@@ -18,6 +18,7 @@
 
   <p align="center">
     The best Plant-Care App!
+    (Made with React Native)
     <br />
     
   </p>
@@ -140,7 +141,7 @@ if you are interested to see how everything works, please refer to my [Linkedin 
 <br />
 <div align="center">
   <a href="https://i.ibb.co/nzm493Q/appF.png">
-    <img src="https://i.ibb.co/nzm493Q/appF.png" alt="Logo" width="1366" height="1640">
+    <img src="https://i.ibb.co/nzm493Q/appF.png" alt="Logo" width="1366" height="1240">
   </a>
 </div>
 
@@ -207,7 +208,7 @@ These are some of the resources I used.
 [product-screenshot]: https://i.ibb.co/r765QGK/background.jpg
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/R-React-%231182C2
+[React.js]: https://img.shields.io/badge/R-React--Native-blue
 [React-url]: https://reactjs.org/
 [Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
 [Vue-url]: https://vuejs.org/
