@@ -141,7 +141,7 @@ if you are interested to see how everything works, please refer to my [Linkedin 
 <br />
 <div align="center">
   <a href="https://i.ibb.co/nzm493Q/appF.png">
-    <img src="https://i.ibb.co/nzm493Q/appF.png" alt="Logo" width="1366" height="1240">
+    <img src="https://i.ibb.co/nzm493Q/appF.png" alt="Logo" width="1366" height="1040">
   </a>
 </div>
 
