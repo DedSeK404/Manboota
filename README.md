@@ -145,7 +145,7 @@ To see all the functionalities and use-case scenarios of my app please watch thi
 Here are some screenshots from the app:
 <div align="center">
   <a href="https://i.ibb.co/nzm493Q/appF.png">
-    <img src="https://i.ibb.co/nzm493Q/appF.png" alt="Logo" width="1366" height="1040">
+    <img src="https://i.ibb.co/7tr9CGp/thumbnail.jpg" alt="Logo" width="1366" height="1040">
   </a>
 </div>
 
