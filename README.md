@@ -134,12 +134,12 @@ These are all the dependencies that I used in my project
 
 ## Usage
 
-To see all the functionalities and use-case scenarios of my app please watch this short video explainer
-
-<iframe width="709" height="399" src="https://www.youtube.com/embed/32oTO9PGgNs" title="Manboota User&#39;s Guide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+To see all the functionalities and use-case scenarios of my app please watch this short video explainer on my youtube channel:
+[youtube video](https://www.youtube.com/embed/32oTO9PGgNs)
 
 
 <br />
+Here are some screenshots from the app:
 <div align="center">
   <a href="https://i.ibb.co/nzm493Q/appF.png">
     <img src="https://i.ibb.co/nzm493Q/appF.png" alt="Logo" width="1366" height="1040">
