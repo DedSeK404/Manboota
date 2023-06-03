@@ -135,7 +135,7 @@ These are all the dependencies that I used in my project
 ## Usage
 
 To see all the functionalities and use-case scenarios of my app please watch this short video explainer on my youtube channel:
-[youtube video](https://www.youtube.com/embed/32oTO9PGgNs)
+[youtube video](https://www.youtube.com/embed/32oTO9PGgNs) <a>https://www.youtube.com/embed/32oTO9PGgNs</a>
 
 
 <br />
