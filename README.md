@@ -134,9 +134,10 @@ These are all the dependencies that I used in my project
 
 ## Usage
 
-To see all the functionalities and use-case scenarios of my app please visit my linkedin page, I created short videos explaining what everything does in details.
+To see all the functionalities and use-case scenarios of my app please watch this short video explainer
 
-if you are interested to see how everything works, please refer to my [Linkedin profile](https://www.linkedin.com/in/marwen-bennaceur-584366270/)
+<iframe width="709" height="399" src="https://www.youtube.com/embed/32oTO9PGgNs" title="Manboota User&#39;s Guide" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
 
 <br />
 <div align="center">
